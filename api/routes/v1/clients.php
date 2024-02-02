@@ -250,7 +250,11 @@ app()->put("/{_id}/file", function ($_id) {
 app()->delete("/{_id}/file", function ($_id) {
     $passport_id = $_id;
     $passport_file_id = request()->get("passport_file_id");
+    $passport_file = db()->select("passport_file")->where("passport_file_id", $passport_file_id)->fetchAssoc();
     db()->delete("passport_file")->where("passport_file_id", $passport_file_id)->execute();
+    $target_filename = basename($passport_file["file_url"]);
+    $target_file = "../../../old/assets/uploads/" . $target_filename;
+    FS::deleteFile($target_file);
     response()->json([
         "resultCode " => 200,
         "message" => "Successful",
