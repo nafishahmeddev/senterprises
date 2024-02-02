@@ -11,8 +11,8 @@ export default function BottomSection() {
 
 
             <div className="flex items-center justify-center gap-4 my-5 absolute top-10 right-10 text-white text-xl">
-                <a href=""><Icon icon="ri:facebook-fill" /></a>
-                <a href=""><Icon icon="teenyicons:instagram-outline" /></a>
+                <a href="https://www.facebook.com/samimaenterprises"><Icon icon="ri:facebook-fill" /></a>
+                <a href="https://wa.me/918942933882"><Icon icon="ic:baseline-whatsapp" /></a>
             </div>
         </section>
     )
