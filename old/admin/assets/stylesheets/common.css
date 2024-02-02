@@ -1,0 +1,110 @@
+:root{
+    --color-primary: #242424;
+    --color-acent : #9a0407;
+}
+::-webkit-scrollbar {
+    background-color:#fff;
+    width:16px
+}
+
+/* background of the scrollbar except button or resizer */
+::-webkit-scrollbar-track {
+    background-color:#fff
+}
+::-webkit-scrollbar-track:hover {
+    background-color:#f4f4f4
+}
+
+/* scrollbar itself */
+::-webkit-scrollbar-thumb {
+    background-color:#babac0;
+    border-radius:16px;
+    border:5px solid #fff
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color:#a0a0a5;
+    border:4px solid #f4f4f4
+}
+
+/* set button(top and bottom of the scrollbar) */
+::-webkit-scrollbar-button {display:none}
+
+.list-checkbox{
+    position: relative;
+    height: 13px;
+    width: 13px;
+    cursor: pointer;
+}
+.list-checkbox:before{
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    height: 11px;
+    width: 11px;
+    border:2px solid #cccccc;
+    background-color: white;
+    border-radius: 2px;
+}
+.list-checkbox:checked:before {
+    background-color: var(--color-acent);
+    border-color: var(--color-acent);
+}
+.list-checkbox:after{
+    position: absolute;
+    content: '\f00c';
+    top: 0;
+    left: 0;
+    height: 11px;
+    width: 11px;
+    border: 2px solid transparent;
+    font-size: 13px;
+    color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Line Awesome Free';
+    font-weight: 900;
+}
+.list-checkbox:checked:after{
+    color: white;
+}
+
+.alert-containner{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    color: white;
+}
+
+.xpd-popup{
+
+}
+
+.xpd-ask .wrapper{
+    background-color: #ffffff;
+}
+
+.xpd-ask .wrapper button{
+    border: 1px solid #eeeeee;
+    background-color: rgba(0,0,0,0);
+    font-weight: 500;
+    transition: 0.15s;
+}
+.xpd-ask .wrapper button:nth-child(1){
+    color: orange;
+}
+.xpd-ask .wrapper button:nth-child(1):hover{
+    border-color: orange;
+    background-color: orange;
+    color: white;
+}
+
+.xpd-ask .wrapper button:nth-child(2){
+    color: seagreen;
+}
+.xpd-ask .wrapper button:nth-child(2):hover{
+    border-color: seagreen;
+    background-color: seagreen;
+    color: white;
+}

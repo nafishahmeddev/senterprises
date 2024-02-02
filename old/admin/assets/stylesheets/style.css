@@ -1,0 +1,233 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+html, body{
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: grid;
+  grid-template-rows: 60px calc(100% - 60px);
+  grid-template-columns: 250px calc(100% - 250px);
+}
+
+/*********************
+ Header
+ */
+header{
+  display: grid;
+  grid-template-columns: 250px auto 200px ;
+  grid-template-rows: 60px;
+  grid-row: 1;
+  grid-column: 1 / span 2;
+  height: 60px;
+  border-bottom: 1px solid #eeeeee;
+  align-items: center;
+}
+header .logo{
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+header .logo span{
+  font-weight: 600;
+  color: red;
+}
+header .right-content{
+  padding-right: 20px;
+  align-items: center;
+}
+header .right-content .search-box{
+  background-color: #F1F3F4;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  max-width: 700px;
+}
+header .right-content .search-box input{
+  background-color: transparent;
+  border: none;
+  padding: 0 20px 0 40px;
+  outline: none;
+  width: 100%;
+}
+header .right-content .search-box:before{
+  position: absolute;
+  content: '\f002';
+  top: 0;
+  left: 0;
+  height: 100%;
+  width:auto;
+  font-size: 20px;
+  color: green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Line Awesome Free';
+  font-weight: 900;
+  padding-left: 10px;
+}
+header .right-content .search-box input::placeholder{
+  color: #666666;
+}
+
+header .right-content .account{
+
+}
+/*********************
+ Sidebar
+ */
+.sidebar{
+  grid-row: 2;
+  border-right: 1px solid #eeeeee;
+}
+.sidebar nav{
+  display: block;
+  padding-bottom: 10px;
+  padding-top:10px;
+
+}
+.sidebar nav h3{
+  padding: 20px 20px 10px 20px;
+  font-weight: bold;
+  font-size: 16px;
+}
+.sidebar nav ul{
+  display: block;
+
+  margin-left: 10px;
+}
+.sidebar nav li{
+  display: block;
+
+}
+.sidebar nav li a{
+  display: flex;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  padding: 8px 20px;
+}
+.sidebar nav li:hover{
+  background-color: rgba(255,255,255,0.3);
+}
+.sidebar nav li a i{
+  font-size: 23px;
+  height: 23px;
+  width: 23px;
+}
+.sidebar nav li a span{
+  font-size: 15px;
+  display: block;
+}
+/*********************
+ Container
+ */
+.container{
+  grid-row: 2;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 100%;
+}
+
+.container .content{
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  grid-template-rows: 50px calc(100% - 50px);
+}
+
+.container .content .header{
+  border-bottom: 1px solid #eeeeee;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: 50px auto auto;
+}
+.container .content .header .select-all{
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 8px;
+}
+
+.container .content .header .title-box{
+  display: flex;
+  align-items: center;
+
+}
+.container .content .header .title-box h2{
+  font-size: 18px;
+  margin-top: 4px;
+}
+.container .content .header .control-bar{
+
+}
+.container .content .header .control-bar ul{
+  float: right;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  list-style: none;
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.container .content .header .control-bar ul li{
+  display: flex;
+  align-items: center;
+  list-style: none;
+  padding: 0 10px;
+  cursor: pointer;
+}
+.container .content .header .control-bar ul li i{
+  font-size: 20px;
+  color: #666666;
+}
+/*********************
+ Data box
+ */
+
+.container .content .data{
+  grid-row: 2;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.container .content .data .table{
+  border-collapse: collapse;
+  width: 100%;
+}
+.container .content .data .table tr{
+  border-bottom:1px solid #eeeeee;
+}
+.container .content .data .table tr:hover{
+  background-color: #fafafa;
+  cursor: pointer;
+}
+
+.container .content .data .table tr td{
+  padding: 8px;
+  text-wrap: none;
+  width: fit-content;
+  align-items: center;
+}
+
+.container .content .data .table tr td:nth-child(1){
+  padding-left: 20px;
+  width: 40px;
+}
+.container .content .data .table tr td:nth-child(1){
+
+}
+.container .content .data .table tr td:nth-last-child(1){
+  padding-right: 20px;
+}
+

@@ -1,0 +1,366 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i');
+@import url('https://fonts.googleapis.com/css?family=Reenie+Beanie&display=swap');
+*{box-sizing:border-box; margin:0; padding:0; font-family: Roboto; transition:all 0.10s; text-decoration:none;}
+.icon{
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+/* width */
+::-webkit-scrollbar {
+    width:8px;
+	height:4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: none; 
+	box-shadow:0px  0px 1px rgba(0,0,0,0);
+}
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: var(--light-black);
+	transition:all 0.25s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    
+}
+h1, h2, h3, h4, h5, h6{font-family: 'Reenie Beanie', cursive;}
+/* Rules for sizing the icon. */
+.icon.md-9 { font-size: 9px; }
+.icon.md-10 { font-size: 10px; }
+.icon.md-11 { font-size: 11px; }
+.icon.md-12 { font-size: 12px; }
+.icon.md-14 { font-size: 14px; }
+.icon.md-16 { font-size: 16px; }
+.icon.md-18 { font-size: 18px; }
+.icon.md-20 { font-size: 20px; }
+.icon.md-21 { font-size: 21px; }
+.icon.md-22 { font-size: 22px; }
+.icon.md-24 { font-size: 24px; }
+.icon.md-26 { font-size: 26px; }
+.icon.md-28 { font-size: 28px; }
+.icon.md-30 { font-size: 30px; }
+.icon.md-36 { font-size: 36px; }
+.icon.md-48 { font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.icon.md-dark { color: rgba(0, 0, 0, 0.54); }
+.icon.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.icon.md-light { color: rgba(255, 255, 255, 1); }
+.icon.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+html{
+	height:100%; 
+	width:100%;
+	font-size:0px;
+	font-family: Roboto;
+	position: relative;
+	}
+body{
+	height:100%; 
+	width:100%;
+	font-size:0px;
+	position: relative;
+	}
+header{
+	width:100%;
+	height:80px;
+	z-index:3;
+	}
+	header .nav-btn{
+		height:80px;
+		float:right;
+		text-align:left;
+		display:none;
+		}
+	header .logo{
+		height:80px;
+		padding: 10px 0px;
+		width:auto;
+		float:left;  
+		text-align:left;
+		padding-left:var(--l);
+		}
+		header .logo img{
+			height:60px;
+			}
+	header .nav{
+		float:right;
+		}
+		header .nav ul{
+			display:table;
+			}
+			header .nav ul li{
+				display:table-cell;
+				height:50px;
+				}
+				header .nav ul li button{
+					height: 100%;
+					letter-spacing:1px;
+					text-transform:uppercase;
+					position:relative;
+					color: var(--light-black);
+					display: block;
+					}
+				header .nav ul li button:hover{
+					text-shadow: 2px 2px 25px rgba(0,0,0,0.2);
+					color: var(--black);
+				}
+
+				header .nav ul li button.active{
+					color: #D50100;
+					text-shadow: 2px 2px 25px rgba(0,0,0,0.3);
+				}
+	header .profile{
+		float: right;
+		}
+		header .profile ul{
+			display:table;
+			}
+			header .profile ul li{
+				display:table-cell;
+				height:50px;
+				}
+				header .profile ul li button.hilighted-button{
+					height: 30px;
+					margin-top: 10px;
+					padding-left: 20px !important;
+					padding-right: 20px !important;
+					clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+					background-color: rgb(5,23,73);
+					color: var(--white);
+					}
+@media only screen and (max-width: 850px) {
+	
+    header .nav-btn{
+		display:inherit;
+		}
+	header .logo{
+		padding-left:var(--none);
+		}	
+	header .nav{
+		display:inherit;
+		width:100%;
+		position:fixed;
+		top:60px;
+		left:0px;
+		background:var(--white);
+		border-bottom:var(--xxs) solid var(--lighter-grey);
+		display:none
+		}
+		header .nav ul{
+				display:table;
+			width: 100%;
+			}
+			header .nav ul li{
+				display:block;
+				height: auto;
+				}
+				header .nav ul li button{
+					padding-top:var(--m);
+					padding-bottom:var(--m);
+
+					}
+	header .profile ul li button.hilighted-button{
+		height: 30px;
+		margin-top: 10px;
+		padding-left: 20px !important;
+		padding-right: 20px !important;
+		clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+		background-color: rgb(5,23,73);
+		color: var(--white);
+	}
+}
+
+
+
+				
+
+/*containner*/
+.containner{
+	width:calc(100%);
+	}
+.wrapper{
+	max-width:1150px;
+	margin:auto;
+	}
+button{
+	cursor:pointer;
+	outline:none;
+	
+	}
+a{
+	cursor:pointer;
+	}
+
+footer{
+
+	}
+	footer div{
+		}
+		footer div ul{
+			display: block;
+			list-style:none;
+			}
+			footer div ul li{
+				display:block;
+				list-style:none;
+				}
+@keyframes example {
+    0%   {width:0px;}
+    100% {width:250px}
+}
+
+
+			
+			
+
+
+.spinner {
+  -webkit-animation: rotator 1.4s linear infinite;
+          animation: rotator 1.4s linear infinite;
+}
+
+@-webkit-keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+  }
+}
+
+@keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+  }
+}
+.path {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+          animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+}
+
+@-webkit-keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #DE3E35;
+  }
+  50% {
+    stroke: #F7C223;
+  }
+  75% {
+    stroke: #1B9A59;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+
+@keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #DE3E35;
+  }
+  50% {
+    stroke: #F7C223;
+  }
+  75% {
+    stroke: #1B9A59;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+@-webkit-keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+            transform: rotate(450deg);
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+            transform: rotate(450deg);
+  }
+}
+
+.popup{
+	position:fixed; 
+	top:0; 
+	left:0; 
+	width:100%; 
+	height:100%; 
+	z-index:999999999999999999999999; 
+	transform:scale(0); 
+	opacity:0; 
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	}
+.primary-button{
+	box-shadow:0px 0px 50px rgba(0,0,0,0.1);
+}
+.primary-button:hover{
+	box-shadow:0px 0px 20px rgba(0,0,0,0.1);
+}
+.parallelogram{
+	clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+}
+
+		
+

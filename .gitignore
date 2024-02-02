@@ -1,0 +1,7 @@
+client/node_modules/
+
+old/assets/uploads/*
+old/admin/cache
+
+api/vendor/
+api/config/config.php
