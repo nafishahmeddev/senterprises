@@ -1,8 +1,0 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
-
-    # Rewrite requests that don't start with /subfolder to include the subfolder in the path
-    RewriteCond %{REQUEST_URI} !^/client/dist/
-    RewriteRule ^(.*)$ /client/dist/$1 [L]
-</IfModule>
