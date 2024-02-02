@@ -1,1 +1,3 @@
-RewriteRule (.*) /client/dist/$1 [L]
+RewriteEngine on
+RewriteCond %{REQUEST_URI} !^/client/dist/
+RewriteRule ^(.*)$ /client/dist/$1 [L]
