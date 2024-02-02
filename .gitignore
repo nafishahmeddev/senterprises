@@ -1,4 +1,5 @@
 client/node_modules/
+client/dist/
 
 old/assets/uploads/*
 old/admin/cache
