@@ -6,3 +6,5 @@ old/admin/cache
 api/vendor/
 api/config/config.php
 api/storage/uploads
+
+node_modules/
