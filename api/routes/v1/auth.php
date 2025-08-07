@@ -1,7 +1,7 @@
 <?php
 app()->post("/login", function () {
     $user = auth()->login([
-        'username' => request()->get("username"),
+        'email' => request()->get("email"),
         'password' => request()->get("password")
     ]);
 
@@ -11,7 +11,10 @@ app()->post("/login", function () {
             "resultCode" => 200,
             "message" => "Hello World!",
             "result" => [
-                "accessToken"=> $userToken
+                "tokens" => [
+                    "accessToken" => $userToken
+                ],
+                "user"=> $user
             ]
         ]);
     } else {
