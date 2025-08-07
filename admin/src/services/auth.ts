@@ -33,7 +33,7 @@ export default class AuthApi {
       return Promise.reject("No token found");
     }
 
-    return ApiRequest.post(`/api/portal/auth/verify`)
+    return ApiRequest.post(`/v1/auth/verify`)
       .then((res) => {
         const resp: ApiResponse<{
           user: Admin;

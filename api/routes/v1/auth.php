@@ -14,7 +14,7 @@ app()->post("/login", function () {
                 "tokens" => [
                     "accessToken" => $userToken
                 ],
-                "user"=> $user
+                "user" => $user
             ]
         ]);
     } else {
@@ -22,7 +22,25 @@ app()->post("/login", function () {
             "resultCode" => 401,
             'error' => 'Unauthorized',
             'data' => auth()->errors(),
-          ], 401);
+        ], 401);
     }
 });
-?>
+
+app()->post("/verify", function () {
+    $user = auth()->user();
+    if ($user) {
+        response()->json([
+            "resultCode" => 200,
+            "message" => "Verification successful",
+            "result" => [
+                "user" => $user
+            ]
+        ]);
+    } else {
+        response()->exit([
+            "resultCode" => 401,
+            'error' => 'Unauthorized',
+            'result' => auth()->errors(),
+        ], 401);
+    }
+});
