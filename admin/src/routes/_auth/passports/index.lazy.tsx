@@ -9,7 +9,7 @@ import {
 import PassportViewModal from '../../../components/modals/PassportViewModal'
 import PassportFormModal from '../../../components/modals/PassportFormModal'
 import DataTable, { type Column } from '../../../components/ui/DataTable'
-import SearchInput from '../../../components/ui/SearchInput'
+import AdvancedSearchInput, { type SearchField } from '../../../components/ui/AdvancedSearchInput'
 import usePaginateState from '@app/hooks/usePaginatedState'
 import z from 'zod'
 import { useQuery } from '@tanstack/react-query'
@@ -20,10 +20,11 @@ export const Route = createLazyFileRoute('/_auth/passports/')({
 })
 
 function RouteComponent() {
-  const [searchTerm, setSearchTerm] = useState('')
   const [selectedPassport, setSelectedPassport] = useState<Passport | undefined>(undefined)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalMode, setModalMode] = useState<'view' | 'add' | 'edit'>('view')
+  const [showAdvanced, setShowAdvanced] = useState(false)
+
 
   const schema = z.object({
     keyword: z.string().optional(),
@@ -35,11 +36,27 @@ function RouteComponent() {
     validationSchema: schema,
   })
 
+  // Search configuration
+  const searchFields: SearchField[] = [
+
+    {
+      key: 'keyword',
+      label: 'Search Passports',
+      placeholder: 'Enter passport number, name, etc.',
+      type: 'text',
+      value: state.filter.keyword,
+      onChange: (value) => {
+        setPagination({ page: 1, limit: state.pagination.limit }, true)
+        form.setFieldValue('keyword', value)
+      },
+    },
+  ]
+
   // Fetch passports based on search term
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "passports", state],
     queryFn: async () => PassportApi.all({
-      keyword: searchTerm,
+      keyword: '', // For compatibility with the API
       page: state.pagination.page,
       limit: state.pagination.limit,
     }),
@@ -181,15 +198,14 @@ function RouteComponent() {
       {/* Search and Filters */}
       <div className="mb-6">
         <div className="flex flex-col sm:flex-row gap-4">
-          <SearchInput
-            value={searchTerm}
-            onChange={setSearchTerm}
-            placeholder="Search by name, passport number, or MOFA number..."
-            className="flex-1"
-            showButton={true}
-            buttonText="Search"
-            loading={isLoading}
+          <AdvancedSearchInput
+            fields={searchFields}
             onSubmit={form.handleSubmit}
+            loading={isLoading}
+            className="flex-1"
+            buttonText="Filter"
+            showAdvanced={showAdvanced}
+            onToggleAdvanced={() => setShowAdvanced(!showAdvanced)}
           />
         </div>
       </div>
@@ -205,7 +221,7 @@ function RouteComponent() {
           pages: data.result.pages,
         } : undefined}
         onPaginationChange={setPagination}
-        emptyMessage={searchTerm ? `No passports found matching "${searchTerm}".` : "No passports available."}
+        emptyMessage={"No passports available."}
         keyExtractor={(passport) => passport.passport_id.toString()}
       />
 
