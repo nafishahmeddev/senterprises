@@ -35,17 +35,36 @@ export default class Formatter {
   }
 
   static datetime(datetime: string | Date): string {
-    return datetime
-      ? dayjs(datetime).utc().format("DD/MM/YYYY hh:mm:ss A")
-      : "";
+    if (datetime === "0000-00-00" || datetime === "0000-00-00 00:00:00") {
+      return "";
+    }
+    if (dayjs(datetime, "YYYY-MM-DD HH:mm:ss").isValid()) {
+      return dayjs(datetime, "YYYY-MM-DD HH:mm:ss").utc().format("DD/MM/YYYY hh:mm:ss A");
+    } else {
+      return "";
+    }
   }
 
   static time(datetime: string | Date): string {
-    return datetime ? dayjs(datetime).utc().format("hh:mm:ss A") : "";
+    if (datetime === "0000-00-00" || datetime === "0000-00-00 00:00:00") {
+      return "";
+    }
+    if (dayjs(datetime, "YYYY-MM-DD HH:mm:ss").isValid()) {
+      return datetime ? dayjs(datetime, "YYYY-MM-DD HH:mm:ss").utc().format("hh:mm:ss A") : "";
+    } else {
+      return "";
+    }
   }
 
   static date(datetime: string | Date): string {
-    return datetime ? dayjs(datetime).utc().format("DD/MM/YYYY") : "";
+    if (datetime === "0000-00-00" || datetime === "0000-00-00 00:00:00") {
+      return "";
+    }
+    if (dayjs(datetime, "YYYY-MM-DD HH:mm:ss").isValid()) {
+      return datetime ? dayjs(datetime, "YYYY-MM-DD HH:mm:ss").format("DD/MM/YYYY") : "";
+    } else {
+      return "";
+    }
   }
 
   static phone(number: string): string {

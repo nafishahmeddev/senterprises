@@ -14,6 +14,7 @@ import usePaginateState from '@app/hooks/usePaginatedState'
 import z from 'zod'
 import { useQuery } from '@tanstack/react-query'
 import PassportApi from '@app/services/passport'
+import Formatter from '@app/lib/formatter'
 
 export const Route = createLazyFileRoute('/_auth/passports/')({
   component: RouteComponent,
@@ -89,13 +90,6 @@ function RouteComponent() {
     setSelectedPassport(undefined)
   }
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    })
-  }
 
   // Define columns for the DataTable
   const columns: Column<Passport>[] = [
@@ -108,7 +102,7 @@ function RouteComponent() {
             {passport.first_name} {passport.last_name}
           </div>
           <div className="text-sm text-gray-500">
-            Born: {formatDate(passport.date_of_birth)}
+            Born: {Formatter.date(passport.date_of_birth)}
           </div>
         </div>
       ),
@@ -140,7 +134,7 @@ function RouteComponent() {
       header: 'Issue Date',
       render: (passport) => (
         <span className="text-sm text-gray-900">
-          {formatDate(passport.issue_date)}
+          {Formatter.date(passport.issue_date)}
         </span>
       ),
     },
