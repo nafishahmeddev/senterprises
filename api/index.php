@@ -38,7 +38,7 @@ app()->registerMiddleware('auth', function () {
     ], 401);
   }
 });
-
+app()->cors();
 //routes
 app()->get("/", function () {
   response()->json(["message" => "Hello World!"]);
