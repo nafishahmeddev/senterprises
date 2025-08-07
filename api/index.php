@@ -1,13 +1,18 @@
 <?php
+//add CORS headers for specific origins
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-  http_response_code(204);
-  exit;
+    http_response_code(204);
+    exit;
 }
+
+
 const __BASE_DIR__ = __DIR__;
 require __BASE_DIR__ . "/vendor/autoload.php";
 require __BASE_DIR__ . "/config/config.php";
 
-app()->cors();
 
 //connect database
 db()->connect(
