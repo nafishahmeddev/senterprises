@@ -1,5 +1,5 @@
 // Supporting table interfaces
-export interface PassportFile {
+declare interface PassportFile {
   passport_file_id: number
   file_url: string
   passport_id: number
@@ -7,7 +7,7 @@ export interface PassportFile {
   file_type?: string
 }
 
-export interface PassportField {
+declare interface PassportField {
   passport_field_id: number
   name: string
   value: string
@@ -16,7 +16,7 @@ export interface PassportField {
 }
 
 // Passport interface
-export interface Passport {
+declare interface Passport {
   passport_id: number
   first_name: string
   last_name: string

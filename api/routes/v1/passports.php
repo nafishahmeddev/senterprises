@@ -29,16 +29,12 @@ app()->get("/", function () {
         $count = $count->orWhere("passport_number", "=", "$keyword");
     }
     $count = $count->count();
-
-    $pages = ceil($count / $limit);
     response()->json([
         "resultCode" => 200,
         "message" => "Hello World!",
         "result" => [
             "records" => $passports,
-            "pages" => $pages,
-            "page" => $page
-
+            "count" => $count
         ]
     ]);
 });

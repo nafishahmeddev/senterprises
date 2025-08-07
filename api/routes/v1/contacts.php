@@ -28,15 +28,13 @@ app()->get("/", function () {
         $count = $count->orWhere("email", "LIKE", "%$keyword%");
     }
     $count = $count->count();
-
-    $pages = ceil($count / $limit);
+    
     response()->json([
         "resultCode" => 200,
         "message" => "Hello World!",
         "result" => [
-            "records" => $contacts,
-            "pages" => $pages,
-            "page" => $page
+           "records" => $contacts,
+            "count" => $count
 
         ]
     ]);

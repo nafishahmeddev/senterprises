@@ -68,11 +68,11 @@ app()->group('/v1', function () {
   app()->group('/auth', function () {
     include(__BASE_DIR__ . "/routes/v1/auth.php");
   });
-  //clients routes
-  app()->group('/clients', [
+  //passports routes
+  app()->group('/passports', [
     'middleware' => 'auth',
     function () {
-      include(__BASE_DIR__ . "/routes/v1/clients.php");
+      include(__BASE_DIR__ . "/routes/v1/passports.php");
     }
   ]);
 
