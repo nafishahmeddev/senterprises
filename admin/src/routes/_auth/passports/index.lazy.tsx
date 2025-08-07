@@ -38,7 +38,6 @@ function RouteComponent() {
 
   // Search configuration
   const searchFields: SearchField[] = [
-
     {
       key: 'keyword',
       label: 'Search Passports',
@@ -50,13 +49,30 @@ function RouteComponent() {
         form.setFieldValue('keyword', value)
       },
     },
+    // Future advanced search fields can be added here:
+    // {
+    //   key: 'company',
+    //   label: 'Company',
+    //   placeholder: 'Filter by company...',
+    //   type: 'text',
+    //   value: '',
+    //   onChange: (value) => console.log('Company filter:', value),
+    // },
+    // {
+    //   key: 'agent',
+    //   label: 'Agent',
+    //   placeholder: 'Filter by agent...',
+    //   type: 'text',
+    //   value: '',
+    //   onChange: (value) => console.log('Agent filter:', value),
+    // },
   ]
 
   // Fetch passports based on search term
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "passports", state],
     queryFn: async () => PassportApi.all({
-      keyword: '', // For compatibility with the API
+      keyword: state.filter.keyword || '', // Use actual keyword from state
       page: state.pagination.page,
       limit: state.pagination.limit,
     }),
@@ -200,7 +216,10 @@ function RouteComponent() {
         <div className="flex flex-col sm:flex-row gap-4">
           <AdvancedSearchInput
             fields={searchFields}
-            onSubmit={form.handleSubmit}
+            onSubmit={() => {
+              // Form submission is handled by the field onChange
+              // Query will automatically refetch due to state dependency
+            }}
             loading={isLoading}
             className="flex-1"
             buttonText="Filter"
@@ -221,7 +240,7 @@ function RouteComponent() {
           pages: data.result.pages,
         } : undefined}
         onPaginationChange={setPagination}
-        emptyMessage={"No passports available."}
+        emptyMessage={state.filter.keyword ? `No passports found matching "${state.filter.keyword}".` : "No passports available."}
         keyExtractor={(passport) => passport.passport_id.toString()}
       />
 
