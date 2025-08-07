@@ -1,7 +1,7 @@
 <?php
 app()->get("/", function () {
     $page = (int) request()->get("page") ?? 1;
-    $limit = 20;
+    $limit = (int) request()->get("limit") ?? 20;
     $skip = ($page - 1) * $limit;
 
     //keywords
@@ -28,12 +28,12 @@ app()->get("/", function () {
         $count = $count->orWhere("email", "LIKE", "%$keyword%");
     }
     $count = $count->count();
-    
+
     response()->json([
         "resultCode" => 200,
         "message" => "Hello World!",
         "result" => [
-           "records" => $contacts,
+            "records" => $contacts,
             "count" => $count
 
         ]
@@ -54,5 +54,3 @@ app()->get("/{_id}", function ($_id) {
         ]
     ]);
 });
-
-?>

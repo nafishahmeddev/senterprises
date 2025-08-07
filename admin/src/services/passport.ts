@@ -27,8 +27,7 @@ export default class PassportApi {
     }).then((res) => {
       const resp = res.data as ApiResponse<{
         records: Passport[];
-        pages: number;
-        page: number;
+        count: number;
       }>
 
       return resp;

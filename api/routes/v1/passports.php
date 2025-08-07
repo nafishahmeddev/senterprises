@@ -4,7 +4,7 @@ use Leaf\FS;
 
 app()->get("/", function () {
     $page = (int) request()->get("page") ?? 1;
-    $limit = 20;
+    $limit = (int) request()->get("limit") ?? 20;
     $skip = ($page - 1) * $limit;
 
     //keywords

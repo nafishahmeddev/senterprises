@@ -43,9 +43,9 @@ function RouteComponent() {
       label: 'Search Passports',
       placeholder: 'Enter passport number, name, etc.',
       type: 'text',
-      value: state.filter.keyword,
+      value: form.getFieldValue('keyword') || '',
       onChange: (value) => {
-        setPagination({ page: 1, limit: state.pagination.limit }, true)
+        setPagination({ page: 1, limit: state.pagination.limit })
         form.setFieldValue('keyword', value)
       },
     },
@@ -216,10 +216,7 @@ function RouteComponent() {
         <div className="flex flex-col sm:flex-row gap-4">
           <AdvancedSearchInput
             fields={searchFields}
-            onSubmit={() => {
-              // Form submission is handled by the field onChange
-              // Query will automatically refetch due to state dependency
-            }}
+            onSubmit={form.handleSubmit}
             loading={isLoading}
             className="flex-1"
             buttonText="Filter"
@@ -237,7 +234,7 @@ function RouteComponent() {
         pagination={data ? {
           page: state.pagination.page,
           limit: state.pagination.limit,
-          pages: data.result.pages,
+          pages: data.result.count > 0 ? Math.ceil(data.result.count / state.pagination.limit) : 1,
         } : undefined}
         onPaginationChange={setPagination}
         emptyMessage={state.filter.keyword ? `No passports found matching "${state.filter.keyword}".` : "No passports available."}
