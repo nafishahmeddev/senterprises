@@ -7,7 +7,7 @@ export default class AuthApi {
     password: string;
     remember: boolean;
   }) => {
-    return ApiRequest.post("/api/portal/auth/login", payload).then((res) => {
+    return ApiRequest.post("/v1/auth/login", payload).then((res) => {
       const resp = res.data as ApiResponse<{
         tokens: {
           accessToken: string;
