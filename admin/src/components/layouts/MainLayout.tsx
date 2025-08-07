@@ -9,6 +9,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Header from './partials/Header';
 import { Link, Outlet } from '@tanstack/react-router';
+import AuthApi from '@app/services/auth';
 
 export default function MainLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -39,9 +40,7 @@ export default function MainLayout() {
     { isDivider: true },
     {
       label: "Sign out",
-      onClick: () => {
-        console.log('Sign out clicked');
-      }
+      onClick: AuthApi.logout
     }
   ];
 
