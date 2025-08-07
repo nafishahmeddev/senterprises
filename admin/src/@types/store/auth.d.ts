@@ -1,21 +1,9 @@
-
-
-
-interface BaseAuthenticatedState {
+declare type AuthStateLoggedIn = {
   accessToken: string;
   loggedIn: true;
   loading: boolean;
+  user: Admin
 }
-declare interface AccountAuthenticatedState extends BaseAuthenticatedState {
-  user: Account;
-  role: UserRole.Account;
-}
-
-declare interface AdminAuthenticatedState extends BaseAuthenticatedState {
-  user: Admin;
-  role: UserRole.Admin;
-}
-declare type AuthStateLoggedIn = AccountAuthenticatedState | AdminAuthenticatedState;
 
 declare interface AuthStateLoggedOut {
   loggedIn: false;

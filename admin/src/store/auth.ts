@@ -1,7 +1,4 @@
 import { Store, useStore } from "@tanstack/react-store";
-
-
-
 const store = new Store<AuthState>({
   loggedIn: false,
   loading: true,
