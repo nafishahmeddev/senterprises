@@ -37,8 +37,8 @@ export default function MainLayout() {
     { label: "Account Settings", href: "#" },
     { label: "Password Management", href: "#" },
     { isDivider: true },
-    { 
-      label: "Sign out", 
+    {
+      label: "Sign out",
       onClick: () => {
         console.log('Sign out clicked');
       }
@@ -58,9 +58,8 @@ export default function MainLayout() {
       )}
 
       {/* Sidebar */}
-      <div className={`${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:flex lg:flex-col`}>
+      <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:relative lg:flex lg:flex-col`}>
         <div className="flex items-center justify-between h-16 px-6 bg-indigo-600 flex-shrink-0">
           <div className="flex items-center">
             <div className="flex-shrink-0">
@@ -90,13 +89,12 @@ export default function MainLayout() {
                 className={`group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 text-gray-700 hover:bg-gray-50 hover:text-gray-900 [&.active]:bg-indigo-50 [&.active]:text-indigo-600`}
                 activeOptions={{ exact: true }}
                 activeProps={{
-                  className:'active'
+                  className: 'active'
                 }}
-                children={({isActive}) => (
+                children={({ isActive }) => (
                   <>
-                    <item.icon className={`mr-3 flex-shrink-0 w-5 h-5 ${
-                      isActive ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-500'
-                    }`} />
+                    <item.icon className={`mr-3 flex-shrink-0 w-5 h-5 ${isActive ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-500'
+                      }`} />
                     {item.name}
                   </>
                 )}
@@ -120,7 +118,7 @@ export default function MainLayout() {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top navbar */}
-        <Header 
+        <Header
           onMenuToggle={() => setSidebarOpen(true)}
           onNotificationClick={handleNotificationClick}
           user={{ name: "John Doe", role: "Administrator" }}
@@ -130,7 +128,9 @@ export default function MainLayout() {
 
         {/* Page content */}
         <main className="flex-1 p-6 overflow-auto">
-          <Outlet />
+          <div className="max-w-7xl mx-auto">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
