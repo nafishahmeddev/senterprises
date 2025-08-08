@@ -32,6 +32,4 @@ declare interface Passport {
   address: string
   passport_number: string
   contact: string
-  files?: PassportFile[]
-  custom_fields?: PassportField[]
 }

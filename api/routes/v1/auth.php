@@ -32,7 +32,7 @@ app()->post("/verify", function () {
             "resultCode" => 200,
             "message" => "Verification successful",
             "result" => [
-                "user" => $user["user"]
+                "user" => $user
             ]
         ]);
     } else {

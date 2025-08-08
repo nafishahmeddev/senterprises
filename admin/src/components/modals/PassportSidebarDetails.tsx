@@ -3,18 +3,7 @@ import Formatter from '@app/lib/formatter'
 import { useQuery } from '@tanstack/react-query'
 import PassportApi from '@app/services/passport'
 import SidebarDrawer from '../ui/SidebarDrawer'
-import { Fragment } from 'react'
-
-function LoadingComponent({ isLoading, children }: { isLoading: boolean, children: React.ReactNode }) {
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <span className="text-gray-500">Loading...</span>
-      </div>
-    )
-  }
-  return <Fragment>{children}</Fragment>
-}
+import LoadingComponent from '../LoadingComponent'
 
 type PassportSidebarDetailsProps = FormDialogState<Passport> & {
   onEdit: () => void,
