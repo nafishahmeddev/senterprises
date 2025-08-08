@@ -136,6 +136,20 @@ app()->delete("/{_id}", function ($_id) {
             "message" => "Ops! something went wrong",
         ]);
     }
+
+    try {
+        //delete fields
+        db()->delete("passport_field")->where("passport_id", $_id)->execute();
+        //delete fields
+        $files = db()->select("passport_file")->where("passport_id", $_id)->fetchAll();
+        foreach ($files as $file) {
+            FS::deleteFile(realpath(__configuration["uploads_path"]) . "/" . $file["file_url"]);
+        }
+        //delete files
+        db()->delete("passport_file")->where("passport_id", $_id)->execute();
+    } catch (\Exception $e) {
+        error_log($e);
+    }
     response()->json([
         "resultCode " => 200,
         "message" => "Successful",
