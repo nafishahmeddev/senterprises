@@ -40,7 +40,6 @@ app()->get("/", function () {
 });
 
 app()->post("/", function () {
-    $fields = request()->get('fields') ?? [];
     $passport_data = request()->try([
         "first_name",
         'last_name',
@@ -56,6 +55,7 @@ app()->post("/", function () {
         'company',
         'address',
     ]);
+    $passport_data["upload_date"] = date("Y-m-d H:i:s");    
 
     $response = array();
 

@@ -13,7 +13,7 @@ type PassportFormDialogProps = FormDialogState<number | undefined> & {
   onSubmit: (passport_id: number) => void
 }
 
-export default function PassportFormDialog({ open, record : passport_id, onClose, onSubmit }: PassportFormDialogProps) {
+export default function PassportFormDialog({ open, record: passport_id, onClose, onSubmit }: PassportFormDialogProps) {
   const { data, isFetching } = useQuery({
     queryKey: ["admin", "passports", passport_id],
     queryFn: () => PassportApi.get(Number(passport_id)),
@@ -34,7 +34,7 @@ export default function PassportFormDialog({ open, record : passport_id, onClose
       toast.error("Failed to submit passport form.");
     }
   })
-  const { Field, handleSubmit } = useForm({
+  const { Field, handleSubmit, reset } = useForm({
     defaultValues: {
       first_name: data?.result.passport.first_name || '',
       last_name: data?.result.passport.last_name || '',
@@ -42,8 +42,11 @@ export default function PassportFormDialog({ open, record : passport_id, onClose
       mofa_no: data?.result.passport.mofa_no || '',
       date_of_birth: data?.result.passport.date_of_birth || '',
       issue_date: data?.result.passport.issue_date || '',
+      father_name: data?.result.passport.father_name || '',
+      mother_name: data?.result.passport.mother_name || '',
       company: data?.result.passport.company || '',
       agent: data?.result.passport.agent || '',
+      office: data?.result.passport.office || '',
       contact: data?.result.passport.contact || '',
       address: data?.result.passport.address || '',
     },
@@ -55,8 +58,11 @@ export default function PassportFormDialog({ open, record : passport_id, onClose
         mofa_no: z.string().min(1, "MOFA number is required"),
         date_of_birth: z.string().min(1, "Date of birth is required"),
         issue_date: z.string().min(1, "Issue date is required"),
+        father_name: z.string(),
+        mother_name: z.string(),
         company: z.string(),
         agent: z.string(),
+        office: z.string(),
         contact: z.string(),
         address: z.string(),
       }),
@@ -67,6 +73,7 @@ export default function PassportFormDialog({ open, record : passport_id, onClose
   })
 
   useEffect(() => {
+    reset();
     if (open) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -75,7 +82,7 @@ export default function PassportFormDialog({ open, record : passport_id, onClose
     return () => {
       document.body.style.overflow = 'auto';
     }
-  }, [open])
+  }, [open, reset])
 
   return createPortal(
     <dialog open={open} className="modal">
@@ -105,7 +112,7 @@ export default function PassportFormDialog({ open, record : passport_id, onClose
             </div>
 
             {/* Content */}
-            <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+            <div className="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
               <form className="space-y-4">
                 {/* Personal Info */}
                 <div className="grid grid-cols-2 gap-4">
@@ -131,6 +138,46 @@ export default function PassportFormDialog({ open, record : passport_id, onClose
                     {({ name, state: { value, meta }, handleChange, handleBlur }) => (
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                        <input
+                          type="text"
+                          name={name}
+                          value={value || ''}
+                          onChange={(e) => handleChange(e.target.value)}
+                          onBlur={handleBlur}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        />
+                        {meta.errors.length > 0 && (
+                          <p className="mt-1 text-sm text-red-600">{meta.errors.map(error => error?.message).join(', ')}</p>
+                        )}
+                      </div>
+                    )}
+                  </Field>
+                </div>
+
+                {/* Parent Names */}
+                <div className="grid grid-cols-2 gap-4">
+                  <Field name="father_name">
+                    {({ name, state: { value, meta }, handleChange, handleBlur }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Father's Name</label>
+                        <input
+                          type="text"
+                          name={name}
+                          value={value || ''}
+                          onChange={(e) => handleChange(e.target.value)}
+                          onBlur={handleBlur}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        />
+                        {meta.errors.length > 0 && (
+                          <p className="mt-1 text-sm text-red-600">{meta.errors.map(error => error?.message).join(', ')}</p>
+                        )}
+                      </div>
+                    )}
+                  </Field>
+                  <Field name="mother_name">
+                    {({ name, state: { value, meta }, handleChange, handleBlur }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Mother's Name</label>
                         <input
                           type="text"
                           name={name}
@@ -244,6 +291,27 @@ export default function PassportFormDialog({ open, record : passport_id, onClose
                       </div>
                     )}
                   </Field>
+                  <Field name="office">
+                    {({ name, state: { value, meta }, handleChange, handleBlur }) => (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Office</label>
+                        <input
+                          type="text"
+                          name={name}
+                          value={value || ''}
+                          onChange={(e) => handleChange(e.target.value)}
+                          onBlur={handleBlur}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        />
+                        {meta.errors.length > 0 && (
+                          <p className="mt-1 text-sm text-red-600">{meta.errors.map(error => error?.message).join(', ')}</p>
+                        )}
+                      </div>
+                    )}
+                  </Field>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
                   <Field name="agent">
                     {({ name, state: { value, meta }, handleChange, handleBlur }) => (
                       <div>
@@ -262,26 +330,30 @@ export default function PassportFormDialog({ open, record : passport_id, onClose
                       </div>
                     )}
                   </Field>
+                  <div>
+
+
+                    <Field name="contact">
+                      {({ name, state: { value, meta }, handleChange, handleBlur }) => (
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Contact</label>
+                          <input
+                            type="tel"
+                            name={name}
+                            value={value || ''}
+                            onChange={(e) => handleChange(e.target.value)}
+                            onBlur={handleBlur}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          />
+                          {meta.errors.length > 0 && (
+                            <p className="mt-1 text-sm text-red-600">{meta.errors.join(', ')}</p>
+                          )}
+                        </div>
+                      )}
+                    </Field>
+                  </div>
                 </div>
 
-                <Field name="contact">
-                  {({ name, state: { value, meta }, handleChange, handleBlur }) => (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Contact</label>
-                      <input
-                        type="tel"
-                        name={name}
-                        value={value || ''}
-                        onChange={(e) => handleChange(e.target.value)}
-                        onBlur={handleBlur}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                      />
-                      {meta.errors.length > 0 && (
-                        <p className="mt-1 text-sm text-red-600">{meta.errors.join(', ')}</p>
-                      )}
-                    </div>
-                  )}
-                </Field>
 
                 <Field name="address">
                   {({ name, state: { value, meta }, handleChange, handleBlur }) => (
