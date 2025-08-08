@@ -64,22 +64,15 @@ app()->post("/", function () {
     if (!$passport) {
         db()->insert('passport')->params($passport_data)->execute();
         $last_insert_id = db()->lastInsertId();
-
-        foreach ($fields as $name => $value) {
-            db()->insert("passport_field")->params([
-                "name" => $name,
-                "value" => $value,
-                "passport_id" => $last_insert_id
-            ]);
-        }
+        $passport = db()->select("passport")->where("passport_id", $last_insert_id)->fetchAssoc();
         $response["resultCode"] = 200;
         $response["message"] = "Successfully added profile";
-        $response["result"]["passport_id"] = $last_insert_id;
+        $response["result"]["passport"] = $passport;
     } else {
         $last_insert_id = $passport["passport_id"];
         $response["resultCode"] = 400;
         $response["message"] = "Another profile found in same passport number.";
-        $response["result"]["passport_id"] = $last_insert_id;
+        $response["result"]["passport"] = $passport;
     }
     response()->status($response["resultCode"])->json($response);
 });
@@ -140,11 +133,13 @@ app()->put("/{_id}", function ($_id) {
             "message" => "Ops! something went wrong",
         ]);
     }
+
+    $passport = db()->select("passport")->where("passport_id", $_id)->fetchAssoc();
     response()->json([
         "resultCode " => 200,
         "message" => "Successful",
         "result" => [
-            "passport_id" => $_id
+            "passport" => $passport
         ]
     ]);
 });
@@ -204,7 +199,7 @@ app()->delete("/{_id}/fields", function ($_id) {
     ]);
 });
 
-app()->put("/{_id}/file", function ($_id) {
+app()->put("/{_id}/files", function ($_id) {
     $passport_id = $_id;
     list($file) = array_values(request()->files(['file']));
     if (!$file) {
@@ -243,7 +238,7 @@ app()->put("/{_id}/file", function ($_id) {
     ]);
 });
 
-app()->delete("/{_id}/file", function ($_id) {
+app()->delete("/{_id}/files", function ($_id) {
     $passport_id = $_id;
     $passport_file_id = request()->get("passport_file_id");
     $passport_file = db()->select("passport_file")->where("passport_file_id", $passport_file_id)->fetchAssoc();

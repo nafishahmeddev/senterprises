@@ -247,7 +247,10 @@ function RouteComponent() {
       <PassportFormDialog
         {...formDialog}
         onClose={() => setFormDialog({ open: false, record: undefined })}
-        onSubmit={() => {
+        onSubmit={(passport) => {
+          if (!formDialog.record) {
+            setSidebarDialog({ open: true, record: passport })
+          }
           setFormDialog({ open: false, record: undefined })
         }}
       />
