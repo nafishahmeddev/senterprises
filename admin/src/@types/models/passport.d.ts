@@ -3,8 +3,8 @@ declare interface PassportFile {
   passport_file_id: number
   file_url: string
   passport_id: number
-  file_size?: string
-  file_type?: string
+  file_size: string
+  file_type: string
 }
 
 declare interface PassportField {

@@ -107,7 +107,7 @@ app()->get("/{_id}", function ($_id) {
         "resultCode" => 200,
         "message" => "Hello World!",
         "result" => [
-            ...$client,
+            "passport" => $client,
             "files" => $files,
             "fields" => $fields
 

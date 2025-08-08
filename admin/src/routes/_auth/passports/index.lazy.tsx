@@ -6,10 +6,11 @@ import {
   TrashIcon,
   EyeIcon,
 } from '@heroicons/react/24/outline'
-import PassportViewModal from '../../../components/modals/PassportViewModal'
 import PassportFormModal from '../../../components/modals/PassportFormModal'
 import DataTable, { type Column } from '../../../components/ui/DataTable'
 import AdvancedSearchInput, { type SearchField } from '../../../components/ui/AdvancedSearchInput'
+import SidebarDrawer from '../../../components/ui/SidebarDrawer'
+import PassportSidebarDetails from '../../../components/modals/PassportSidebarDetails'
 import usePaginateState from '@app/hooks/usePaginatedState'
 import z from 'zod'
 import { useQuery } from '@tanstack/react-query'
@@ -23,8 +24,9 @@ export const Route = createLazyFileRoute('/_auth/passports/')({
 function RouteComponent() {
   const [selectedPassport, setSelectedPassport] = useState<Passport | undefined>(undefined)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalMode, setModalMode] = useState<'view' | 'add' | 'edit'>('view')
+  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add')
   const [showAdvanced, setShowAdvanced] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
 
   const schema = z.object({
@@ -79,14 +81,26 @@ function RouteComponent() {
     }),
   })
 
-  const openModal = (mode: 'view' | 'add' | 'edit', passport?: Passport) => {
+  const openModal = (mode: 'add' | 'edit', passport?: Passport) => {
     setModalMode(mode)
     setSelectedPassport(passport)
     setIsModalOpen(true)
+    setIsSidebarOpen(false) // Close sidebar when opening modal
   }
 
   const closeModal = () => {
     setIsModalOpen(false)
+    setSelectedPassport(undefined)
+  }
+
+  const openSidebar = (passport: Passport) => {
+    setSelectedPassport(passport)
+    setIsSidebarOpen(true)
+    setIsModalOpen(false) // Close modal when opening sidebar
+  }
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false)
     setSelectedPassport(undefined)
   }
 
@@ -154,7 +168,7 @@ function RouteComponent() {
           <button
             onClick={(e) => {
               e.stopPropagation()
-              openModal('view', passport)
+              openSidebar(passport)
             }}
             className="text-indigo-600 hover:text-indigo-900 p-1 rounded hover:bg-indigo-50"
             title="View Details"
@@ -233,6 +247,8 @@ function RouteComponent() {
         onPaginationChange={setPagination}
         emptyMessage={state.filter.keyword ? `No passports found matching "${state.filter.keyword}".` : "No passports available."}
         keyExtractor={(passport) => passport.passport_id.toString()}
+        onRowClick={(passport) => openSidebar(passport)}
+        rowClassName="cursor-pointer hover:bg-gray-50"
       />
 
       {/* Simple Modal for View/Add/Edit */}
@@ -247,25 +263,39 @@ function RouteComponent() {
           {/* Modal */}
           <div className="relative bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
 
-            {modalMode === 'view' ? (
-              // VIEW MODE - Simple Details
-              <PassportViewModal isOpen={isModalOpen} onClose={closeModal} passport={selectedPassport} onEdit={() => openModal('edit', selectedPassport)} />
-            ) : (
-              // FORM MODE - Simple Form
-              <PassportFormModal
-                isOpen={isModalOpen}
-                onClose={closeModal}
-                mode={modalMode}
-                passport={selectedPassport}
-                onSubmit={(passport) => {
-                  console.log(`${modalMode === 'add' ? 'Adding' : 'Updating'} passport`, passport)
-                  closeModal()
-                }}
-              />
-            )}
+
+            <PassportFormModal
+              isOpen={isModalOpen}
+              onClose={closeModal}
+              mode={modalMode as unknown as 'add' | 'edit'}
+              passport={selectedPassport}
+              onSubmit={(passport) => {
+                console.log(`${modalMode === 'add' ? 'Adding' : 'Updating'} passport`, passport)
+                closeModal()
+              }}
+            />
+
           </div>
         </div>
       )}
+
+      {/* Sidebar Drawer for Passport Details */}
+      <SidebarDrawer
+        isOpen={isSidebarOpen}
+        onClose={closeSidebar}
+        title="Passport Details"
+        width="xl"
+      >
+        {selectedPassport && (
+          <PassportSidebarDetails
+            passport={selectedPassport}
+            onEdit={() => {
+              closeSidebar()
+              openModal('edit', selectedPassport)
+            }}
+          />
+        )}
+      </SidebarDrawer>
     </Fragment>
   )
 }

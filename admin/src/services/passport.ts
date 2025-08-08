@@ -33,4 +33,11 @@ export default class PassportApi {
       return resp;
     });
   }
+
+  static get = (passportId: number) => {
+    return ApiRequest.get(`/v1/passports/${passportId}`).then((res) => {
+      const resp = res.data as ApiResponse<{ passport: Passport , files: PassportFile[]; fields: PassportField[] }>;
+      return resp;
+    });
+  }
 }
