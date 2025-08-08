@@ -187,10 +187,12 @@ app()->post("/{_id}/fields", function ($_id) {
     ]);
 });
 
-app()->delete("/{_id}/fields", function ($_id) {
+app()->delete("/{_id}/fields/{passport_field_id}", function ($_id, $passport_field_id) {
     $passport_id = $_id;
-    $name = request()->get("name");
-    db()->delete("passport_field")->where("name", $name)->where("passport_id", $passport_id)->execute();
+    db()->delete("passport_field")
+        ->where("passport_field_id", $passport_field_id)
+        ->where("passport_id", $passport_id)
+        ->execute();
     response()->json([
         "resultCode " => 200,
         "message" => "Successful",
@@ -257,13 +259,11 @@ app()->post("/{_id}/files", function ($_id) {
     ]);
 });
 
-app()->delete("/{_id}/files", function ($_id) {
-    $passport_id = $_id;
-    $passport_file_id = request()->get("passport_file_id");
+app()->delete("/{_id}/files/{passport_file_id}", function ($_id, $passport_file_id) {
     $passport_file = db()->select("passport_file")->where("passport_file_id", $passport_file_id)->fetchAssoc();
     db()->delete("passport_file")->where("passport_file_id", $passport_file_id)->execute();
     $target_filename = basename($passport_file["file_url"]);
-    $target_file = "../../../old/assets/uploads/" . $target_filename;
+    $target_file = realpath(__configuration["uploads_path"]) . "/" . $target_filename;
     FS::deleteFile($target_file);
     response()->json([
         "resultCode " => 200,

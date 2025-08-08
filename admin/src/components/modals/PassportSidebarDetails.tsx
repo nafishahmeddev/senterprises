@@ -7,6 +7,7 @@ import LoadingComponent from '../LoadingComponent'
 import { useState } from 'react'
 import PassportFieldDialog from './PassportFieldDialog'
 import PassportFileDialog from './PassportFileDialog'
+import toast from 'react-hot-toast'
 
 
 function FilesSection({ passport_id }: { passport_id: number }) {
@@ -15,7 +16,7 @@ function FilesSection({ passport_id }: { passport_id: number }) {
     record: undefined
   });
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["admin", "passports", passport_id, "files"],
     queryFn: () => PassportApi.getAllFiles(Number(passport_id)),
     enabled: !!passport_id,
@@ -40,12 +41,13 @@ function FilesSection({ passport_id }: { passport_id: number }) {
 
   const handleDeleteFile = async (file: PassportFile) => {
     if (window.confirm(`Are you sure you want to delete "${file.file_url.split('/').pop()}"?`)) {
-      try {
-        await PassportApi.deleteFile(passport_id, file.passport_file_id)
-        // The query will automatically refetch due to the mutation
-      } catch (error) {
-        console.error('Error deleting file:', error)
-      }
+      await toast.promise(PassportApi.deleteFile(passport_id, file.passport_file_id), {
+        loading: 'Deleting...',
+        success: 'File deleted successfully!',
+        error: 'Error deleting file.',
+      }).then(() => {
+        refetch()
+      })
     }
   }
 
@@ -164,7 +166,7 @@ function FieldsSection({ passport_id }: { passport_id: number }) {
     record: undefined
   });
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["admin", "passports", passport_id, "fields"],
     queryFn: () => PassportApi.getAllFields(Number(passport_id)),
     enabled: !!passport_id,
@@ -175,12 +177,13 @@ function FieldsSection({ passport_id }: { passport_id: number }) {
 
   const handleDeleteField = async (field: PassportField) => {
     if (window.confirm(`Are you sure you want to delete the field "${field.name}"?`)) {
-      try {
-        await PassportApi.deleteField(passport_id, field.passport_field_id)
-        // The query will automatically refetch due to the mutation
-      } catch (error) {
-        console.error('Error deleting field:', error)
-      }
+      await toast.promise(PassportApi.deleteField(passport_id, field.passport_field_id), {
+        loading: 'Deleting...',
+        success: 'Field deleted successfully!',
+        error: 'Error deleting field.',
+      }).then(() => {
+        refetch()
+      });
     }
   }
 
