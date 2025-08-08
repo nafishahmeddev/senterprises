@@ -55,7 +55,7 @@ app()->post("/", function () {
         'company',
         'address',
     ]);
-    $passport_data["upload_date"] = date("Y-m-d H:i:s");    
+    $passport_data["upload_date"] = date("Y-m-d H:i:s");
 
     $response = array();
 
@@ -83,26 +83,11 @@ app()->get("/{_id}", function ($_id) {
         ->where("passport_id", $_id)
         ->fetchAssoc();
 
-    $files = db()->select("passport_file", "*")
-        ->where("passport_id", $_id)
-        ->fetchAll();
-    $files = array_map(function ($file) {
-        $file["file_preview_url"] = __configuration["public_url"] . "/uploads/" . $file["file_url"];
-        return $file;
-    }, $files);
-
-    $fields = db()->select("passport_field", "*")
-        ->where("passport_id", $_id)
-        ->fetchAll();
-
     response()->json([
         "resultCode" => 200,
         "message" => "Hello World!",
         "result" => [
             "passport" => $client,
-            "files" => $files,
-            "fields" => $fields
-
         ]
     ]);
 });
@@ -157,6 +142,21 @@ app()->delete("/{_id}", function ($_id) {
     ]);
 });
 
+// Passport Fields
+app()->get("/{_id}/fields", function ($_id) {
+    $passport_id = $_id;
+    $fields = db()->select("passport_field", "*")
+        ->where("passport_id", $passport_id)
+        ->fetchAll();
+    response()->json([
+        "resultCode " => 200,
+        "message" => "Successful",
+        "result" => [
+            "fields" => $fields
+        ]
+    ]);
+});
+
 app()->put("/{_id}/fields", function ($_id) {
     $passport_id = $_id;
     $name = request()->get("name");
@@ -196,7 +196,28 @@ app()->delete("/{_id}/fields", function ($_id) {
     ]);
 });
 
-app()->put("/{_id}/file", function ($_id) {
+
+// Passport Files
+app()->get("/{_id}/files", function ($_id) {
+    $passport_id = $_id;
+    $files = db()->select("passport_file", "*")
+        ->where("passport_id", $passport_id)
+        ->fetchAll();
+    $files = array_map(function ($file) {
+        $file["file_preview_url"] = __configuration["public_url"] . "/uploads/" . $file["file_url"];
+        return $file;
+    }, $files);
+
+    response()->json([
+        "resultCode " => 200,
+        "message" => "Successful",
+        "result" => [
+            "files" => $files
+        ]
+    ]);
+});
+
+app()->put("/{_id}/files", function ($_id) {
     $passport_id = $_id;
     list($file) = array_values(request()->files(['file']));
     if (!$file) {
@@ -235,7 +256,7 @@ app()->put("/{_id}/file", function ($_id) {
     ]);
 });
 
-app()->delete("/{_id}/file", function ($_id) {
+app()->delete("/{_id}/files", function ($_id) {
     $passport_id = $_id;
     $passport_file_id = request()->get("passport_file_id");
     $passport_file = db()->select("passport_file")->where("passport_file_id", $passport_file_id)->fetchAssoc();
