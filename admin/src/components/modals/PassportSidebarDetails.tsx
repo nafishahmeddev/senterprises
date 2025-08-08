@@ -7,6 +7,8 @@ import LoadingComponent from '../LoadingComponent'
 import { useState } from 'react'
 import PassportFieldDialog from './PassportFieldDialog'
 import PassportFileDialog from './PassportFileDialog'
+import FileViewer from '../ui/FileViewer'
+import { useFileViewer } from '@app/hooks/useFileViewer'
 import toast from 'react-hot-toast'
 
 
@@ -15,6 +17,8 @@ function FilesSection({ passport_id }: { passport_id: number }) {
     open: false,
     record: undefined
   });
+  
+  const { isOpen, file, openViewer, closeViewer } = useFileViewer();
 
   const { data, refetch } = useQuery({
     queryKey: ["admin", "passports", passport_id, "files"],
@@ -37,6 +41,25 @@ function FilesSection({ passport_id }: { passport_id: number }) {
       return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
     }
     return `${Math.round(bytes / 1024)} KB`;
+  };
+
+  const handleViewFile = (file: PassportFile) => {
+    openViewer({
+      url: file.file_preview_url,
+      name: file.file_preview_url.split('/').pop() || 'Unknown File',
+      type: file.file_type,
+      size: file.file_size
+    });
+  };
+
+  const handleDownloadFile = (file: PassportFile) => {
+    const link = document.createElement('a');
+    link.href = file.file_preview_url;
+    link.download = file.file_preview_url.split('/').pop() || 'download';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const handleDeleteFile = async (file: PassportFile) => {
@@ -96,14 +119,14 @@ function FilesSection({ passport_id }: { passport_id: number }) {
 
             <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
               <button
-                onClick={() => console.log('View file', file.passport_file_id)}
+                onClick={() => handleViewFile(file)}
                 className="p-1 text-gray-400 hover:text-indigo-600 rounded bg-amber-50"
                 title="View file"
               >
                 <EyeIcon className="h-4 w-4" />
               </button>
               <button
-                onClick={() => console.log('Download file', file.passport_file_id)}
+                onClick={() => handleDownloadFile(file)}
                 className="p-1 text-gray-400 hover:text-green-600 rounded"
                 title="Download file"
               >
@@ -155,6 +178,13 @@ function FilesSection({ passport_id }: { passport_id: number }) {
           });
         }}
         onSubmit={() => {}}
+      />
+
+      {/* File Viewer */}
+      <FileViewer
+        isOpen={isOpen}
+        onClose={closeViewer}
+        file={file || { url: '', name: '', type: '' }}
       />
     </div>
   )

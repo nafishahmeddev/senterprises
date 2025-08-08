@@ -2,6 +2,7 @@
 declare interface PassportFile {
   passport_file_id: number
   file_url: string
+  file_preview_url: string
   passport_id: number
   file_size: string
   file_type: string
