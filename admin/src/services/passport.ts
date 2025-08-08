@@ -43,14 +43,14 @@ export default class PassportApi {
 
   static create = (data: Partial<Passport>) => {
     return ApiRequest.post("/v1/passports", data).then((res) => {
-      const resp = res.data as ApiResponse<{ passport: Passport }>;
+      const resp = res.data as ApiResponse<{ passport_id: number }>;
       return resp;
     });
   } 
 
   static update = (passportId: number, data: Partial<Passport>) => {
     return ApiRequest.put(`/v1/passports/${passportId}`, data).then((res) => {
-      const resp = res.data as ApiResponse<{ passport: Passport }>;
+      const resp = res.data as ApiResponse<{ passport_id: number }>;
       return resp;
     });
   }

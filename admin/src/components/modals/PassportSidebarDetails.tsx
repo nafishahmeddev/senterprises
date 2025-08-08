@@ -5,16 +5,16 @@ import PassportApi from '@app/services/passport'
 import SidebarDrawer from '../ui/SidebarDrawer'
 import LoadingComponent from '../LoadingComponent'
 
-type PassportSidebarDetailsProps = FormDialogState<Passport> & {
+type PassportSidebarDetailsProps = FormDialogState<number> & {
   onEdit: () => void,
   onClose: () => void
 }
 
-export default function PassportSidebarDetails({ open, record, onEdit, onClose }: PassportSidebarDetailsProps) {
+export default function PassportSidebarDetails({ open, record: passport_id, onEdit, onClose }: PassportSidebarDetailsProps) {
   const { data, isFetching } = useQuery({
-    queryKey: ["admin", "passports", record?.passport_id],
-    queryFn: () => PassportApi.get(Number(record?.passport_id)),
-    enabled: !!record?.passport_id,
+    queryKey: ["admin", "passports", passport_id],
+    queryFn: () => PassportApi.get(Number(passport_id)),
+    enabled: !!passport_id,
   })
 
   const passport = data?.result.passport;
@@ -38,7 +38,7 @@ export default function PassportSidebarDetails({ open, record, onEdit, onClose }
 
 
   return (
-    <SidebarDrawer isOpen={open} onClose={onClose} title={`Passport Details: ${record?.passport_number}`} width="xl">
+    <SidebarDrawer isOpen={open} onClose={onClose} title={`Passport Details`} width="xl">
       <LoadingComponent isLoading={isFetching}>
         {passport ? (
           <div className="space-y-6">

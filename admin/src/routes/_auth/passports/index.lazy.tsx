@@ -22,8 +22,8 @@ export const Route = createLazyFileRoute('/_auth/passports/')({
 
 function RouteComponent() {
   const [showAdvanced, setShowAdvanced] = useState(false)
-  const [sidebarDialog, setSidebarDialog] = useState<FormDialogState<Passport>>({ open: false })
-  const [formDialog, setFormDialog] = useState<FormDialogState<Passport | undefined>>({ open: false, })
+  const [sidebarDialog, setSidebarDialog] = useState<FormDialogState<number>>({ open: false })
+  const [formDialog, setFormDialog] = useState<FormDialogState<number | undefined>>({ open: false, })
 
   const schema = z.object({
     keyword: z.string().optional(),
@@ -143,7 +143,7 @@ function RouteComponent() {
               e.stopPropagation()
               setSidebarDialog({
                 open: true,
-                record: passport,
+                record: passport.passport_id,
               })
             }}
             className="text-indigo-600 hover:text-indigo-900 p-1 rounded hover:bg-indigo-50"
@@ -156,7 +156,7 @@ function RouteComponent() {
               e.stopPropagation()
               setFormDialog({
                 open: true,
-                record: passport,
+                record: passport.passport_id,
               })
             }}
             className="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-50"
@@ -226,7 +226,7 @@ function RouteComponent() {
         onPaginationChange={setPagination}
         emptyMessage={state.filter.keyword ? `No passports found matching "${state.filter.keyword}".` : "No passports available."}
         keyExtractor={(passport) => passport.passport_id.toString()}
-        onRowClick={(passport) => setSidebarDialog({ open: true, record: passport })}
+        onRowClick={(passport) => setSidebarDialog({ open: true, record: passport.passport_id })}
         rowClassName="cursor-pointer hover:bg-gray-50"
       />
 
@@ -247,9 +247,9 @@ function RouteComponent() {
       <PassportFormDialog
         {...formDialog}
         onClose={() => setFormDialog({ open: false, record: undefined })}
-        onSubmit={(passport) => {
+        onSubmit={(passport_id) => {
           if (!formDialog.record) {
-            setSidebarDialog({ open: true, record: passport })
+            setSidebarDialog({ open: true, record: passport_id })
           }
           setFormDialog({ open: false, record: undefined })
         }}

@@ -8,26 +8,26 @@ import z from 'zod'
 import LoadingComponent from '../LoadingComponent'
 import { useEffect } from 'react'
 
-type PassportFormDialogProps = FormDialogState<Passport | undefined> & {
+type PassportFormDialogProps = FormDialogState<number | undefined> & {
   onClose: () => void
-  onSubmit: (data: Passport) => void
+  onSubmit: (passport_id: number) => void
 }
 
-export default function PassportFormDialog({ open, record, onClose, onSubmit }: PassportFormDialogProps) {
+export default function PassportFormDialog({ open, record : passport_id, onClose, onSubmit }: PassportFormDialogProps) {
   const { data, isFetching } = useQuery({
-    queryKey: ["admin", "passports", record?.passport_id],
-    queryFn: () => PassportApi.get(Number(record?.passport_id)),
-    enabled: !!record?.passport_id,
+    queryKey: ["admin", "passports", passport_id],
+    queryFn: () => PassportApi.get(Number(passport_id)),
+    enabled: !!passport_id,
   })
   const mutation = useMutation({
     mutationFn: (values: Partial<Passport>) => {
-      const promise = record ? PassportApi.update(record.passport_id, values) : PassportApi.create(values);
+      const promise = passport_id ? PassportApi.update(passport_id, values) : PassportApi.create(values);
       return promise;
     },
     onSuccess: (data) => {
-      onSubmit(data.result.passport);
+      onSubmit(data.result.passport_id);
       onClose();
-      toast.success(`Passport ${record ? 'updated' : 'created'} successfully!`);
+      toast.success(`Passport ${passport_id ? 'updated' : 'created'} successfully!`);
     },
     onError: (error) => {
       console.error("Error submitting passport form:", error);
@@ -93,7 +93,7 @@ export default function PassportFormDialog({ open, record, onClose, onSubmit }: 
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-bold text-gray-900">
-                  {record ? 'Edit Passport' : 'Add Passport'}
+                  {passport_id ? 'Edit Passport' : 'Add Passport'}
                 </h2>
                 <button
                   onClick={onClose}
@@ -317,7 +317,7 @@ export default function PassportFormDialog({ open, record, onClose, onSubmit }: 
                   onClick={handleSubmit}
                   className="px-4 py-2 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
                 >
-                  {record ? 'Update Passport' : 'Add Passport'}
+                  {passport_id ? 'Update Passport' : 'Add Passport'}
                 </button>
               </div>
             </div>
