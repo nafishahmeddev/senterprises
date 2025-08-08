@@ -6,6 +6,7 @@ import { createPortal } from 'react-dom'
 import toast from 'react-hot-toast'
 import z from 'zod'
 import LoadingComponent from '../LoadingComponent'
+import { useEffect } from 'react'
 
 type PassportFormDialogProps = FormDialogState<Passport | undefined> & {
   onClose: () => void
@@ -64,6 +65,17 @@ export default function PassportFormDialog({ open, record, onClose, onSubmit }: 
       mutation.mutate(value);
     }
   })
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    }
+  }, [open])
 
   return createPortal(
     <dialog open={open} className="modal">

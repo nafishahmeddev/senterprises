@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
 interface SidebarDrawerProps {
@@ -23,6 +23,17 @@ export default function SidebarDrawer({
     xl: 'max-w-xl'
   }
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [isOpen])
+
   if (!isOpen) return null
 
   return (
@@ -38,7 +49,7 @@ export default function SidebarDrawer({
         <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
           {/* Header */}
           {title && (
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 sticky top-0 bg-white">
               <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
               <button
                 onClick={onClose}
