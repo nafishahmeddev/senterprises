@@ -23,7 +23,7 @@ export default function MainLayout() {
   const navigation: NavigationItem[] = [
     { name: 'Dashboard', href: '/', icon: Squares2X2Icon },
     { name: 'Passports', href: '/passports', icon: DocumentIcon },
-    { name: 'Access', href: '/access', icon: KeyIcon },
+    { name: 'Passwords', href: '/access', icon: KeyIcon },
   ];
 
   // Header callbacks
@@ -32,7 +32,7 @@ export default function MainLayout() {
   };
 
   const userMenuActions = [
-    // { label: "Account Settings", href: "#" },
+    { label: "Account Settings", href: "#" },
     // { label: "Password Management", href: "#" },
     { isDivider: true },
     {
