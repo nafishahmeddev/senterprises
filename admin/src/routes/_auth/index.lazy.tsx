@@ -10,7 +10,7 @@ export const Route = createLazyFileRoute('/_auth/')({
 })
 
 function RouteComponent() {
-  const navigate  = Route.useNavigate()
+  const navigate = Route.useNavigate()
   return <Fragment>
     {/* Welcome Section */}
     <div className="mb-8">
@@ -23,10 +23,10 @@ function RouteComponent() {
       {/* Quick Actions */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h2>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Manage Passports Card */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6 hover:border-indigo-300 transition-colors" onClick={()=>navigate({to: "/passports"})}>
+          <div className="bg-white border border-gray-200 rounded-lg p-6 hover:border-indigo-300 transition-colors" >
             <div className="flex items-center mb-4">
               <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
                 <DocumentIcon className="w-5 h-5 text-indigo-600" />
@@ -36,13 +36,13 @@ function RouteComponent() {
             <p className="text-gray-600 mb-4">
               View, edit, and organize all passport documents in one centralized location.
             </p>
-            <div className="text-sm text-indigo-600 font-medium">
+            <div className="text-sm text-indigo-600 font-medium" onClick={() => navigate({ to: "/passports" })}>
               Access Management →
             </div>
           </div>
 
           {/* Manage Access Card */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6 hover:border-green-300 transition-colors" onClick={()=>navigate({to: "/access"})}>
+          <div className="bg-white border border-gray-200 rounded-lg p-6 hover:border-green-300 transition-colors">
             <div className="flex items-center mb-4">
               <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4">
                 <KeyIcon className="w-5 h-5 text-green-600" />
@@ -52,7 +52,7 @@ function RouteComponent() {
             <p className="text-gray-600 mb-4">
               Control user permissions and secure access to sensitive passport information.
             </p>
-            <div className="text-sm text-green-600 font-medium">
+            <div className="text-sm text-green-600 font-medium" onClick={() => navigate({ to: "/access" })}>
               Security Controls →
             </div>
           </div>
