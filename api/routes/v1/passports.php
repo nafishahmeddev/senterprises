@@ -218,7 +218,7 @@ app()->get("/{_id}/files", function ($_id) {
     ]);
 });
 
-app()->put("/{_id}/files", function ($_id) {
+app()->post("/{_id}/files", function ($_id) {
     $passport_id = $_id;
     list($file) = array_values(request()->files(['file']));
     if (!$file) {
@@ -228,26 +228,26 @@ app()->put("/{_id}/files", function ($_id) {
         ]);
     }
     $source_file = $file["tmp_name"];
-    $target_filename = basename("pic" . rand(0, 99999) . "" . $file["name"]);
-    $target_file = "../../../old/assets/uploads/" . $target_filename;
+    $original_name = preg_replace('/[^a-zA-Z0-9_\.-]/', '_', $file["name"]);
+    $target_filename = "pic" . rand(0, 99999) . "_" . $original_name;
+    $target_file = realpath(__configuration["uploads_path"]) . "/" . $target_filename;
 
-    $res = FS::moveFile($source_file, $target_file);
+    FS::moveFile($source_file, $target_file);
 
-
-    if (!$res) {
-        response()->status(400)->json([
-            "resultCode " => 400,
-            "message" => "Something went wrong",
-        ]);
-    }
     //save to database
-    db()->insert("passport_file")->params([
+    $res = db()->insert("passport_file")->params([
         "file_url" => $target_filename,
         "passport_id" => $passport_id,
         "file_size" => $file["size"],
-        "file_type" => $file["name"]
+        "file_type" => $file["type"]
     ])->execute();
 
+    if (!$res) {
+        return response()->json([
+            "resultCode " => 400,
+            "message" => "Something went wrong",
+        ], 200);
+    }
     response()->json([
         "resultCode " => 200,
         "message" => "Successful",

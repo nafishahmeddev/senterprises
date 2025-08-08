@@ -1,5 +1,5 @@
 import { useForm } from '@tanstack/react-form'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import z from 'zod'
 import LoadingComponent from '../LoadingComponent'
@@ -18,7 +18,8 @@ type PassportFieldDialogProps = FormDialogState<{
 export default function PassportFieldDialog({ open, record, onClose, onSubmit }: PassportFieldDialogProps) {
   const passport_id = record?.passport_id;
   const field = record?.field || undefined;
-  
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: (values: { name: string; value: string }) => {
       const fieldData = field 
@@ -30,6 +31,9 @@ export default function PassportFieldDialog({ open, record, onClose, onSubmit }:
       onSubmit();
       onClose();
       toast.success(`Field ${field ? 'updated' : 'created'} successfully!`);
+      queryClient.invalidateQueries({
+        queryKey: ["admin", "passports", passport_id, "fields"]
+      });
     },
     onError: (error) => {
       console.error("Error submitting field:", error);
@@ -76,12 +80,13 @@ export default function PassportFieldDialog({ open, record, onClose, onSubmit }:
                   </label>
                   <input
                     type="text"
+                    disabled={!!field}
                     name={name}
                     value={value || ''}
                     onChange={(e) => handleChange(e.target.value)}
                     onBlur={handleBlur}
                     placeholder="e.g., Emergency Contact, Blood Type, etc."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                   />
                   {meta.errors.length > 0 && (
                     <p className="mt-1 text-sm text-red-600">

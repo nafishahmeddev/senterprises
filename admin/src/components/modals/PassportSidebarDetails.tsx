@@ -6,9 +6,15 @@ import SidebarDrawer from '../ui/SidebarDrawer'
 import LoadingComponent from '../LoadingComponent'
 import { useState } from 'react'
 import PassportFieldDialog from './PassportFieldDialog'
+import PassportFileDialog from './PassportFileDialog'
 
 
 function FilesSection({ passport_id }: { passport_id: number }) {
+  const [fileFormDialog, setFileFormDialog] = useState<FormDialogState<{ file: PassportFile | undefined, passport_id: number }>>({
+    open: false,
+    record: undefined
+  });
+
   const { data } = useQuery({
     queryKey: ["admin", "passports", passport_id, "files"],
     queryFn: () => PassportApi.getAllFiles(Number(passport_id)),
@@ -16,12 +22,14 @@ function FilesSection({ passport_id }: { passport_id: number }) {
   })
 
   const files: PassportFile[] = data?.result.files || [];
+  
   const getFileIcon = (fileType: string) => {
     if (fileType?.includes('pdf')) return '📄';
     if (fileType?.includes('image')) return '🖼️';
     if (fileType?.includes('document')) return '📝';
     return '📁';
   };
+  
   const formatFileSize = (sizeInBytes: string) => {
     const bytes = parseInt(sizeInBytes);
     if (bytes >= 1024 * 1024) {
@@ -30,12 +38,31 @@ function FilesSection({ passport_id }: { passport_id: number }) {
     return `${Math.round(bytes / 1024)} KB`;
   };
 
+  const handleDeleteFile = async (file: PassportFile) => {
+    if (window.confirm(`Are you sure you want to delete "${file.file_url.split('/').pop()}"?`)) {
+      try {
+        await PassportApi.deleteFile(passport_id, file.passport_file_id)
+        // The query will automatically refetch due to the mutation
+      } catch (error) {
+        console.error('Error deleting file:', error)
+      }
+    }
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-medium text-gray-900">Attached Files</h3>
         <button
-          onClick={() => console.log('Add file')}
+          onClick={() => {
+            setFileFormDialog({
+              open: true,
+              record: {
+                passport_id: passport_id,
+                file: undefined
+              }
+            });
+          }}
           className="inline-flex items-center px-2 py-1 text-xs font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100"
         >
           <PlusIcon className="h-3 w-3 mr-1" />
@@ -68,7 +95,7 @@ function FilesSection({ passport_id }: { passport_id: number }) {
             <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
               <button
                 onClick={() => console.log('View file', file.passport_file_id)}
-                className="p-1 text-gray-400 hover:text-indigo-600 rounded"
+                className="p-1 text-gray-400 hover:text-indigo-600 rounded bg-amber-50"
                 title="View file"
               >
                 <EyeIcon className="h-4 w-4" />
@@ -81,7 +108,7 @@ function FilesSection({ passport_id }: { passport_id: number }) {
                 <ArrowDownTrayIcon className="h-4 w-4" />
               </button>
               <button
-                onClick={() => console.log('Delete file', file.passport_file_id)}
+                onClick={() => handleDeleteFile(file)}
                 className="p-1 text-gray-400 hover:text-red-600 rounded"
                 title="Delete file"
               >
@@ -97,7 +124,15 @@ function FilesSection({ passport_id }: { passport_id: number }) {
             <p className="mt-3 text-sm text-gray-500">No files attached</p>
             <p className="mt-1 text-xs text-gray-400">Drag and drop files here, or click to browse</p>
             <button
-              onClick={() => console.log('Upload first file')}
+              onClick={() => {
+                setFileFormDialog({
+                  open: true,
+                  record: {
+                    passport_id: passport_id,
+                    file: undefined
+                  }
+                });
+              }}
               className="mt-3 inline-flex items-center px-3 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100"
             >
               <PlusIcon className="h-4 w-4 mr-1" />
@@ -106,6 +141,19 @@ function FilesSection({ passport_id }: { passport_id: number }) {
           </div>
         )}
       </div>
+
+      {/* File Dialog */}
+      <PassportFileDialog
+        open={fileFormDialog.open}
+        record={fileFormDialog.record}
+        onClose={() => {
+          setFileFormDialog({
+            open: false,
+            record: undefined
+          });
+        }}
+        onSubmit={() => {}}
+      />
     </div>
   )
 }
