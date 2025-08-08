@@ -157,7 +157,7 @@ app()->get("/{_id}/fields", function ($_id) {
     ]);
 });
 
-app()->put("/{_id}/fields", function ($_id) {
+app()->post("/{_id}/fields", function ($_id) {
     $passport_id = $_id;
     $name = request()->get("name");
     $value = request()->get("value");
@@ -173,7 +173,8 @@ app()->put("/{_id}/fields", function ($_id) {
         db()->insert("passport_field")->params([
             "value" => $value,
             "name" => $name,
-            "passport_id" => $passport_id
+            "passport_id" => $passport_id,
+            "upload_date" => date("Y-m-d H:i:s")
         ])->execute();
     }
 

@@ -4,6 +4,8 @@ import { useQuery } from '@tanstack/react-query'
 import PassportApi from '@app/services/passport'
 import SidebarDrawer from '../ui/SidebarDrawer'
 import LoadingComponent from '../LoadingComponent'
+import { useState } from 'react'
+import PassportFieldDialog from './PassportFieldDialog'
 
 
 function FilesSection({ passport_id }: { passport_id: number }) {
@@ -109,6 +111,11 @@ function FilesSection({ passport_id }: { passport_id: number }) {
 }
 
 function FieldsSection({ passport_id }: { passport_id: number }) {
+  const [fieldFormDialog, setFieldFormDialog] = useState<FormDialogState<{ field: PassportField | undefined, passport_id: number }>>({
+    open: false,
+    record: undefined
+  });
+
   const { data } = useQuery({
     queryKey: ["admin", "passports", passport_id, "fields"],
     queryFn: () => PassportApi.getAllFields(Number(passport_id)),
@@ -117,12 +124,31 @@ function FieldsSection({ passport_id }: { passport_id: number }) {
 
   const fields: PassportField[] = data?.result.fields || [];
 
+
+  const handleDeleteField = async (field: PassportField) => {
+    if (window.confirm(`Are you sure you want to delete the field "${field.name}"?`)) {
+      try {
+        await PassportApi.deleteField(passport_id, field.passport_field_id)
+        // The query will automatically refetch due to the mutation
+      } catch (error) {
+        console.error('Error deleting field:', error)
+      }
+    }
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-medium text-gray-900">Additional Fields</h3>
         <button
-          onClick={() => console.log('Add field')}
+          onClick={() => {
+            setFieldFormDialog({
+              open: true, record: {
+                passport_id: passport_id,
+                field: undefined
+              }
+            });
+          }}
           className="inline-flex items-center px-2 py-1 text-xs font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100"
         >
           <PlusIcon className="h-3 w-3 mr-1" />
@@ -137,14 +163,22 @@ function FieldsSection({ passport_id }: { passport_id: number }) {
               <dt className="text-sm font-medium text-gray-500">{field.name}</dt>
               <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
-                  onClick={() => console.log('Edit field', field.passport_field_id)}
+                  onClick={() => {
+                    setFieldFormDialog({
+                      open: true,
+                      record: {
+                        passport_id: passport_id,
+                        field: field
+                      }
+                    });
+                  }}
                   className="p-1 text-gray-400 hover:text-indigo-600 rounded"
                   title="Edit field"
                 >
                   <PencilIcon className="h-3 w-3" />
                 </button>
                 <button
-                  onClick={() => console.log('Delete field', field.passport_field_id)}
+                  onClick={() => handleDeleteField(field)}
                   className="p-1 text-gray-400 hover:text-red-600 rounded"
                   title="Delete field"
                 >
@@ -163,7 +197,15 @@ function FieldsSection({ passport_id }: { passport_id: number }) {
             </div>
             <p className="mt-2 text-sm text-gray-500">No additional fields</p>
             <button
-              onClick={() => console.log('Add first field')}
+              onClick={() => {
+                setFieldFormDialog({
+                  open: true,
+                  record: {
+                    passport_id: passport_id,
+                    field: undefined
+                  }
+                });
+              }}
               className="mt-2 text-sm text-indigo-600 hover:text-indigo-500"
             >
               Add your first field
@@ -171,6 +213,15 @@ function FieldsSection({ passport_id }: { passport_id: number }) {
           </div>
         )}
       </dl>
+
+      {/* Field Dialog */}
+      <PassportFieldDialog
+        {...fieldFormDialog}
+        onClose={() => {
+          setFieldFormDialog({ open: false, record: undefined });
+        }}
+        onSubmit={() => { }}
+      />
     </div>
   )
 }
