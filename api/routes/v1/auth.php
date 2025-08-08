@@ -6,15 +6,14 @@ app()->post("/login", function () {
     ]);
 
     if ($user) {
-        $userToken = $user['token'];
         response()->json([
             "resultCode" => 200,
             "message" => "Hello World!",
             "result" => [
                 "tokens" => [
-                    "accessToken" => $userToken
+                    "accessToken" => $user["token"]
                 ],
-                "user" => $user
+                "user" => $user["user"]
             ]
         ]);
     } else {
@@ -33,7 +32,7 @@ app()->post("/verify", function () {
             "resultCode" => 200,
             "message" => "Verification successful",
             "result" => [
-                "user" => $user
+                "user" => $user["user"]
             ]
         ]);
     } else {
