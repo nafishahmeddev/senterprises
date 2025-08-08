@@ -1,8 +1,7 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import {
-  PlusIcon,
+  DocumentIcon,
   KeyIcon,
-  CogIcon,
 } from '@heroicons/react/24/outline'
 import { Fragment } from 'react/jsx-runtime'
 
@@ -11,6 +10,7 @@ export const Route = createLazyFileRoute('/_auth/')({
 })
 
 function RouteComponent() {
+  const navigate  = Route.useNavigate()
   return <Fragment>
     {/* Welcome Section */}
     <div className="mb-8">
@@ -19,90 +19,66 @@ function RouteComponent() {
     </div>
 
     {/* Content area */}
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="max-w-4xl">
       {/* Quick Actions */}
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
-        <div className="space-y-3">
-          <button className="w-full text-left p-3 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-indigo-100 rounded-md flex items-center justify-center mr-3">
-                <PlusIcon className="w-5 h-5 text-indigo-600" />
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Manage Passports Card */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6 hover:border-indigo-300 transition-colors" onClick={()=>navigate({to: "/passports"})}>
+            <div className="flex items-center mb-4">
+              <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
+                <DocumentIcon className="w-5 h-5 text-indigo-600" />
               </div>
-              <span className="text-sm font-medium text-gray-900">Add New Passport</span>
+              <h3 className="text-lg font-semibold text-gray-900">Manage Passports</h3>
             </div>
-          </button>
-          <button className="w-full text-left p-3 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-green-100 rounded-md flex items-center justify-center mr-3">
+            <p className="text-gray-600 mb-4">
+              View, edit, and organize all passport documents in one centralized location.
+            </p>
+            <div className="text-sm text-indigo-600 font-medium">
+              Access Management →
+            </div>
+          </div>
+
+          {/* Manage Access Card */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6 hover:border-green-300 transition-colors" onClick={()=>navigate({to: "/access"})}>
+            <div className="flex items-center mb-4">
+              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4">
                 <KeyIcon className="w-5 h-5 text-green-600" />
               </div>
-              <span className="text-sm font-medium text-gray-900">Manage Access</span>
+              <h3 className="text-lg font-semibold text-gray-900">Manage Access</h3>
             </div>
-          </button>
-          <button className="w-full text-left p-3 rounded-md bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-purple-100 rounded-md flex items-center justify-center mr-3">
-                <CogIcon className="w-5 h-5 text-purple-600" />
-              </div>
-              <span className="text-sm font-medium text-gray-900">System Settings</span>
-            </div>
-          </button>
-        </div>
-      </div>
-
-      {/* Recent Activity */}
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h3>
-        <div className="space-y-4">
-          <div className="flex items-start space-x-3">
-            <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-            <div className="flex-1">
-              <p className="text-sm text-gray-900">System started successfully</p>
-              <p className="text-xs text-gray-500">2 hours ago</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-3">
-            <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-            <div className="flex-1">
-              <p className="text-sm text-gray-900">New passport document added</p>
-              <p className="text-xs text-gray-500">4 hours ago</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-3">
-            <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
-            <div className="flex-1">
-              <p className="text-sm text-gray-900">Access permissions updated</p>
-              <p className="text-xs text-gray-500">6 hours ago</p>
-            </div>
-          </div>
-          <div className="flex items-start space-x-3">
-            <div className="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
-            <div className="flex-1">
-              <p className="text-sm text-gray-900">System backup completed</p>
-              <p className="text-xs text-gray-500">1 day ago</p>
+            <p className="text-gray-600 mb-4">
+              Control user permissions and secure access to sensitive passport information.
+            </p>
+            <div className="text-sm text-green-600 font-medium">
+              Security Controls →
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    {/* System Status */}
-    <div className="mt-6">
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">System Status</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="flex items-center">
-            <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
-            <span className="text-sm text-gray-700">All systems operational</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
-            <span className="text-sm text-gray-700">Database connected</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
-            <span className="text-sm text-gray-700">Security active</span>
+      {/* System Info */}
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+        <div className="text-center">
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">System Overview</h3>
+          <p className="text-gray-600 mb-6">
+            Enterprise-grade passport management system designed for efficiency and security.
+          </p>
+          <div className="grid grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-indigo-600 mb-1">Secure</div>
+              <div className="text-sm text-gray-500">Data Protection</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600 mb-1">Available</div>
+              <div className="text-sm text-gray-500">24/7 Access</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600 mb-1">Scalable</div>
+              <div className="text-sm text-gray-500">Enterprise Ready</div>
+            </div>
           </div>
         </div>
       </div>

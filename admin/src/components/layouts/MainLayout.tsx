@@ -4,7 +4,6 @@ import {
   Squares2X2Icon,
   DocumentIcon,
   KeyIcon,
-  CogIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import Header from './partials/Header';
@@ -18,15 +17,13 @@ export default function MainLayout() {
   interface NavigationItem {
     name: string;
     href: string;
-    icon: React.ComponentType<{ className?: string }>;
-    current: boolean;
+    icon: React.ComponentType<{ className?: string }>
   }
 
   const navigation: NavigationItem[] = [
-    { name: 'Dashboard', href: '/', icon: Squares2X2Icon, current: true },
-    { name: 'Passports', href: '/passports', icon: DocumentIcon, current: false },
-    { name: 'Access', href: '/access', icon: KeyIcon, current: false },
-    { name: 'Settings', href: '/settings', icon: CogIcon, current: false },
+    { name: 'Dashboard', href: '/', icon: Squares2X2Icon },
+    { name: 'Passports', href: '/passports', icon: DocumentIcon },
+    { name: 'Access', href: '/access', icon: KeyIcon },
   ];
 
   // Header callbacks
@@ -35,8 +32,8 @@ export default function MainLayout() {
   };
 
   const userMenuActions = [
-    { label: "Account Settings", href: "#" },
-    { label: "Password Management", href: "#" },
+    // { label: "Account Settings", href: "#" },
+    // { label: "Password Management", href: "#" },
     { isDivider: true },
     {
       label: "Sign out",
