@@ -6,28 +6,24 @@ import {
   TrashIcon,
   EyeIcon,
 } from '@heroicons/react/24/outline'
-import PassportFormModal from '../../../components/modals/PassportFormModal'
 import DataTable, { type Column } from '../../../components/ui/DataTable'
 import AdvancedSearchInput, { type SearchField } from '../../../components/ui/AdvancedSearchInput'
-import SidebarDrawer from '../../../components/ui/SidebarDrawer'
 import PassportSidebarDetails from '../../../components/modals/PassportSidebarDetails'
 import usePaginateState from '@app/hooks/usePaginatedState'
 import z from 'zod'
 import { useQuery } from '@tanstack/react-query'
 import PassportApi from '@app/services/passport'
 import Formatter from '@app/lib/formatter'
+import PassportFormDialog from '@app/components/modals/PassportFormDialog'
 
 export const Route = createLazyFileRoute('/_auth/passports/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const [selectedPassport, setSelectedPassport] = useState<Passport | undefined>(undefined)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalMode, setModalMode] = useState<'add' | 'edit'>('add')
   const [showAdvanced, setShowAdvanced] = useState(false)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-
+  const [sidebarDialog, setSidebarDialog] = useState<FormDialogState<Passport>>({ open: false })
+  const [formDialog, setFormDialog] = useState<FormDialogState<Passport | undefined>>({ open: false, })
 
   const schema = z.object({
     keyword: z.string().optional(),
@@ -80,29 +76,6 @@ function RouteComponent() {
       limit: state.pagination.limit,
     }),
   })
-
-  const openModal = (mode: 'add' | 'edit', passport?: Passport) => {
-    setModalMode(mode)
-    setSelectedPassport(passport)
-    setIsModalOpen(true)
-    setIsSidebarOpen(false) // Close sidebar when opening modal
-  }
-
-  const closeModal = () => {
-    setIsModalOpen(false)
-    setSelectedPassport(undefined)
-  }
-
-  const openSidebar = (passport: Passport) => {
-    setSelectedPassport(passport)
-    setIsSidebarOpen(true)
-    setIsModalOpen(false) // Close modal when opening sidebar
-  }
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false)
-    setSelectedPassport(undefined)
-  }
 
 
   // Define columns for the DataTable
@@ -168,7 +141,10 @@ function RouteComponent() {
           <button
             onClick={(e) => {
               e.stopPropagation()
-              openSidebar(passport)
+              setSidebarDialog({
+                open: true,
+                record: passport,
+              })
             }}
             className="text-indigo-600 hover:text-indigo-900 p-1 rounded hover:bg-indigo-50"
             title="View Details"
@@ -178,7 +154,10 @@ function RouteComponent() {
           <button
             onClick={(e) => {
               e.stopPropagation()
-              openModal('edit', passport)
+              setFormDialog({
+                open: true,
+                record: passport,
+              })
             }}
             className="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-50"
             title="Edit"
@@ -210,7 +189,7 @@ function RouteComponent() {
             <p className="text-gray-600 mt-2">Manage passport documents and information</p>
           </div>
           <button
-            onClick={() => openModal('add')}
+            onClick={() => setFormDialog({ open: true, record: undefined })}
             className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 transition-colors duration-200"
           >
             <PlusIcon className="w-4 h-4 mr-2" />
@@ -247,55 +226,32 @@ function RouteComponent() {
         onPaginationChange={setPagination}
         emptyMessage={state.filter.keyword ? `No passports found matching "${state.filter.keyword}".` : "No passports available."}
         keyExtractor={(passport) => passport.passport_id.toString()}
-        onRowClick={(passport) => openSidebar(passport)}
+        onRowClick={(passport) => setSidebarDialog({ open: true, record: passport })}
         rowClassName="cursor-pointer hover:bg-gray-50"
       />
 
-      {/* Simple Modal for View/Add/Edit */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-gray-900/50 bg-opacity-50"
-            onClick={closeModal}
-          ></div>
 
-          {/* Modal */}
-          <div className="relative bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
-
-
-            <PassportFormModal
-              isOpen={isModalOpen}
-              onClose={closeModal}
-              mode={modalMode as unknown as 'add' | 'edit'}
-              passport={selectedPassport}
-              onSubmit={(passport) => {
-                console.log(`${modalMode === 'add' ? 'Adding' : 'Updating'} passport`, passport)
-                closeModal()
-              }}
-            />
-
-          </div>
-        </div>
-      )}
 
       {/* Sidebar Drawer for Passport Details */}
-      <SidebarDrawer
-        isOpen={isSidebarOpen}
-        onClose={closeSidebar}
-        title="Passport Details"
-        width="xl"
-      >
-        {selectedPassport && (
-          <PassportSidebarDetails
-            passport={selectedPassport}
-            onEdit={() => {
-              closeSidebar()
-              openModal('edit', selectedPassport)
-            }}
-          />
-        )}
-      </SidebarDrawer>
+
+      <PassportSidebarDetails
+        {...sidebarDialog}
+        onClose={() => setSidebarDialog({ open: false })}
+        onEdit={() => {
+          setFormDialog({ open: true, record: sidebarDialog.record })
+          setSidebarDialog({ open: false })
+        }}
+      />
+
+      {/* Form Dialog for Creating/Editing Passport */}
+      <PassportFormDialog
+        {...formDialog}
+        onClose={() => setFormDialog({ open: false, record: undefined })}
+        onSubmit={() => {
+          setFormDialog({ open: false, record: undefined })
+        }}
+      />
+
     </Fragment>
   )
 }
