@@ -100,12 +100,12 @@ function RouteComponent() {
       accessor: 'passport_number',
       className: 'text-sm text-gray-900',
     },
-    {
-      key: 'mofa_no',
-      header: 'MOFA Number',
-      accessor: 'mofa_no',
-      className: 'text-sm text-gray-900',
-    },
+    // {
+    //   key: 'mofa_no',
+    //   header: 'MOFA Number',
+    //   accessor: 'mofa_no',
+    //   className: 'text-sm text-gray-900',
+    // },
     {
       key: 'company',
       header: 'Company',
@@ -116,15 +116,15 @@ function RouteComponent() {
         </div>
       ),
     },
-    {
-      key: 'issue_date',
-      header: 'Issue Date',
-      render: (passport) => (
-        <span className="text-sm text-gray-900">
-          {Formatter.date(passport.issue_date)}
-        </span>
-      ),
-    },
+    // {
+    //   key: 'issue_date',
+    //   header: 'Issue Date',
+    //   render: (passport) => (
+    //     <span className="text-sm text-gray-900">
+    //       {Formatter.date(passport.issue_date)}
+    //     </span>
+    //   ),
+    // },
     {
       key: 'agent',
       header: 'Agent',
