@@ -17,7 +17,7 @@ app()->get("/", function () {
         $passports = $passports->orWhere("last_name", "LIKE", "%$keyword%");
         $passports = $passports->orWhere("passport_number", "=", "$keyword");
     }
-    $passports = $passports->orderBy("first_name", "asc");
+    $passports = $passports->orderBy("upload_date", "desc");
     $passports = $passports->limit("$skip,$limit");
     $passports = $passports->fetchAll();
 
