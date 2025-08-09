@@ -75,13 +75,6 @@ app()->group('/v1', function () {
       include(__BASE_DIR__ . "/routes/v1/passports.php");
     }
   ]);
-
-  app()->group('/contacts', [
-    'middleware' => 'auth',
-    function () {
-      include(__BASE_DIR__ . "/routes/v1/contacts.php");
-    }
-  ]);
 });
 
 
