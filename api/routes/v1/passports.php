@@ -13,9 +13,11 @@ app()->get("/", function () {
     //passports
     $passports = db()->select("passport", "*");
     if ($keyword && strlen($keyword) > 0) {
-        $passports = $passports->where("first_name", "LIKE", "%$keyword%");
-        $passports = $passports->orWhere("last_name", "LIKE", "%$keyword%");
         $passports = $passports->orWhere("passport_number", "=", "$keyword");
+        $passports = $passports->orWhere("mofa_no", "=", "$keyword");
+        $passports = $passports->orWhere("mother_name", "=", "$keyword");
+        $passports = $passports->orWhere("father_name", "=", "$keyword");
+        $passports = $passports->orWhere("CONCAT(first_name, ' ', last_name)", "LIKE", "%$keyword%");
     }
     $passports = $passports->orderBy("upload_date", "desc");
     $passports = $passports->limit("$skip,$limit");

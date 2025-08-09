@@ -226,7 +226,7 @@ function RouteComponent() {
         onPaginationChange={setPagination}
         emptyMessage={state.filter.keyword ? `No passports found matching "${state.filter.keyword}".` : "No passports available."}
         keyExtractor={(passport) => passport.passport_id.toString()}
-        onRowClick={(passport) => setSidebarDialog({ open: true, record: passport.passport_id })}
+        // onRowClick={(passport) => setSidebarDialog({ open: true, record: passport.passport_id })}
         rowClassName="cursor-pointer hover:bg-gray-50"
       />
 
