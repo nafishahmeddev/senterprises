@@ -68,7 +68,7 @@ function RouteComponent() {
   ]
 
   // Fetch passports based on search term
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["admin", "passports", state],
     queryFn: async () => PassportApi.all({
       keyword: state.filter.keyword || '', // Use actual keyword from state
@@ -134,11 +134,8 @@ function RouteComponent() {
     {
       key: 'status',
       header: 'Status',
-      render: (passport) => (
-        <span className={`text-sm font-medium ${passport.status === 'active' ? 'text-green-600' : 'text-red-600'}`}>
-          {passport.status.charAt(0).toUpperCase() + passport.status.slice(1)}
-        </span>
-      ),
+      accessor: 'status',
+      className: 'text-sm text-gray-900',
     },
     {
       key: 'actions',
@@ -260,7 +257,8 @@ function RouteComponent() {
           if (!formDialog.record) {
             setSidebarDialog({ open: true, record: passport_id })
           }
-          setFormDialog({ open: false, record: undefined })
+          setFormDialog({ open: false, record: undefined });
+          refetch();
         }}
       />
 
