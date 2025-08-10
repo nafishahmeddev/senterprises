@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   XMarkIcon,
   Squares2X2Icon,
@@ -7,12 +7,13 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import Header from './partials/Header';
-import { Link, Outlet } from '@tanstack/react-router';
+import { Link, Outlet, useRouter } from '@tanstack/react-router';
 import AuthApi from '@app/services/auth';
 
 export default function MainLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false); // For mobile
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // For desktop
+  const router = useRouter();
 
   // Navigation items type
   interface NavigationItem {
@@ -37,7 +38,7 @@ export default function MainLayout() {
     // On mobile (< lg): toggle sidebar open/close
     // On desktop (>= lg): toggle sidebar collapse
     const isDesktop = window.innerWidth >= 1024;
-    
+
     if (isDesktop) {
       setSidebarCollapsed(!sidebarCollapsed);
     } else {
@@ -54,6 +55,16 @@ export default function MainLayout() {
       onClick: AuthApi.logout
     }
   ];
+
+  useEffect(() => {
+    const subs = router.subscribe("onBeforeNavigate", () => {
+      setSidebarOpen(false);
+    });
+
+    return () => {
+      subs();
+    };
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-gray-100 flex">
@@ -143,9 +154,9 @@ export default function MainLayout() {
 
         {/* Page content */}
         <main className="flex-1 p-6 overflow-auto">
-          <div className="max-w-7xl mx-auto">
-            <Outlet />
-          </div>
+
+          <Outlet />
+
         </main>
       </div>
     </div>
