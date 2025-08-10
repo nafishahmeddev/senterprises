@@ -132,6 +132,15 @@ function RouteComponent() {
       className: 'text-sm text-gray-900',
     },
     {
+      key: 'status',
+      header: 'Status',
+      render: (passport) => (
+        <span className={`text-sm font-medium ${passport.status === 'active' ? 'text-green-600' : 'text-red-600'}`}>
+          {passport.status.charAt(0).toUpperCase() + passport.status.slice(1)}
+        </span>
+      ),
+    },
+    {
       key: 'actions',
       header: 'Actions',
       headerClassName: 'text-right',
