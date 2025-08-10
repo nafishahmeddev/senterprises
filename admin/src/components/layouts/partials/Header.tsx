@@ -69,11 +69,12 @@ export default function Header({
     <header className={`bg-white shadow-sm border-b border-gray-200 flex-shrink-0 ${className}`}>
       <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
-          {/* Mobile menu button */}
+          {/* Menu button - visible on all screen sizes */}
           {onMenuToggle && (
             <button
               onClick={handleMenuToggle}
-              className="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+              className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+              title="Toggle menu"
             >
               <Bars3Icon className="w-6 h-6" />
             </button>
