@@ -56,6 +56,8 @@ app()->post("/", function () {
         'office',
         'company',
         'address',
+        'status',
+        "passport_type"
     ]);
     $passport_data["upload_date"] = date("Y-m-d H:i:s");
 
@@ -109,6 +111,8 @@ app()->put("/{_id}", function ($_id) {
         'office',
         'company',
         'address',
+        'status',
+        "passport_type"
     ]);
 
     //check if already exist

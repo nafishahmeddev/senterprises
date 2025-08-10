@@ -32,5 +32,7 @@ declare interface Passport {
   mother_name: string
   address: string
   passport_number: string
+  passport_type: string
   contact: string
+  status: string
 }

@@ -154,9 +154,7 @@ export default function MainLayout() {
 
         {/* Page content */}
         <main className="flex-1 p-6 overflow-auto">
-
           <Outlet />
-
         </main>
       </div>
     </div>
