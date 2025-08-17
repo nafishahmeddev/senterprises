@@ -58,7 +58,7 @@ app()->post("/", function () {
         'address',
         'status',
         "passport_type"
-    ]);
+    ], false);
     $passport_data["upload_date"] = date("Y-m-d H:i:s");
 
     $response = array();
@@ -113,7 +113,7 @@ app()->put("/{_id}", function ($_id) {
         'address',
         'status',
         "passport_type"
-    ]);
+    ], false);
 
     //check if already exist
     $res = db()->update("passport")->params($passport_data)->where("passport_id", $_id)->execute();
