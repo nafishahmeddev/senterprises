@@ -40,7 +40,7 @@ function RouteComponent() {
     {
       key: 'keyword',
       label: 'Search Passports',
-      placeholder: 'Enter passport number, name, etc.',
+      placeholder: 'Enter passport number, name, company, agent, status etc.',
       type: 'text',
       value: form.getFieldValue('keyword') || '',
       onChange: (value) => {
